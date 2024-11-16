@@ -1,0 +1,176 @@
+{% extends 'admin_dashboard.html' %}
+
+
+{% block content %}
+    <div class="conatiner justify-content-center m-3">
+        {% if item == 'service' %}
+            <div class="my-5 row container-fluid align-items-center justify-content-center">
+                <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                    <div class="card border-primary">
+                        <div class="card-header text-center">
+                            Service Detail
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table border border-primary">
+                                <tr>
+                                    <th>Service ID:</th>
+                                    <td>{{ ser.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th> Name:</th>
+                                    <td>{{ ser.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Price:</th>
+                                    <td>Rs.  {{ ser.price }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Time Required:</th>
+                                    <td>{{ ser.time_required }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description:</th>
+                                    <td>{{ ser.description }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif item == 'customer' %}
+        <div class="my-5 row container-fluid align-items-center justify-content-center">
+            <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                <div class="card border-primary">
+                    <div class="card-header text-center">
+                        Customer Detail
+                    </div>
+                    <div class="card-body text-center">
+                        <table class="table border border-primary">
+                            <tr>
+                                <th>Customer ID:</th>
+                                <td>{{ customer.id }}</td>
+                            </tr>
+                            <tr>
+                                <th> Name:</th>
+                                <td>{{ customer.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>{{ customer.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{ customer.address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Pincode:</th>
+                                <td>{{ customer.pincode }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif item == 'service_request' %}
+        <div class="my-5 row container-fluid align-items-center justify-content-center">
+            <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                <div class="card border-primary">
+                    <div class="card-header text-center">
+                        Service Request Detail
+                    </div>
+                    <div class="card-body text-center">
+                        <table class="table border border-primary">
+                            <tr>
+                                <th>Request ID:</th>
+                                <td>{{ serreq.id }}</td>
+                            </tr>
+                            <tr>
+                                <th> Service ID:</th>
+                                <td>{{ serreq.service_id}}</td>
+                            </tr>
+                            <tr>
+                                <th>Customer ID:</th>
+                                <td>{{ serreq.customer_id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Professional ID:</th>
+                                <td>{{ serreq.professional_id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date of Request:</th>
+                                <td>{{ serreq.date_of_request }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date of completion:</th>
+                                <td>{{ serreq.date_of_completion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Service Status:</th>
+                                <td>{{ serreq.service_status }}</td>
+                            </tr>
+                            <tr>
+                                <th>Remarks:</th>
+                                <td>{{ serreq.remarks }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="my-5 row container-fluid align-items-center justify-content-center">
+            <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                <div class="card border-primary">
+                    <div class="card-header text-center">
+                        Professional Detail
+                    </div>
+                    <div class="card-body text-center">
+                        <table class="table border border-primary">
+                            <tr>
+                                <th>Professional ID:</th>
+                                <td>{{ prof.id }}</td>
+                            </tr>
+                            <tr>
+                                <th> Name:</th>
+                                <td>{{ prof.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date Created:</th>
+                                <td>{{ prof.Date_created }}</td>
+                            </tr>
+                            <tr>
+                                <th>Service:</th>
+                                <td>{{ prof.service_type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Experience:</th>
+                                <td>{{ prof.experience }}</td>
+                            </tr>
+                            <tr>
+                                <th>Resume:</th>
+                                <td>{{ prof.file_path }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{ prof.address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Pincode:</th>
+                                <td>{{ prof.pincode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>{{ prof.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>{{ prof.status }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}

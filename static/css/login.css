@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'sour Gummy';
+    background-color: rgb(229, 218, 201);
+}
+.container{
+    height: 75vh;
+    width: 75vw;
+    border: 2px solid burlywood;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    background-color:transparent;
+    backdrop-filter: blur(30px);
+    background-image: linear-gradient(120deg,rgba(255, 255, 255, 0.3),rgba(0, 0, 0, 0.2));
+    background-size: 35px;
+    
+}
+.house{
+    height: 50vh;
+    border-radius: 25px;
+    margin-right: 25px;
+}
+.outer{
+    font-size: x-large;
+    height: 50vh;
+    width: 50vw;
+}
+label {
+    display: block; 
+    margin-bottom: 8px; 
+}
+input {
+    width: 100%; 
+    height: 12%;
+    padding: 5px; 
+    border: 3px solid #dd550b; 
+    border-radius: 10px; 
+    margin-bottom: 8px;
+    font-family: 'sour gummy';
+    font-size: 20px;
+}
+button{
+    width: 100%;
+    height: 12%;
+    margin: 15px 0px;
+    font-family: 'sour gummy';
+    font-size: large;
+    background-color: lightskyblue;
+    border-radius: 10px;
+    transition: background-color 0.4s;
+}
+label:hover{
+    cursor:pointer;
+
+}
+button:hover{
+    background-color: #30d80a;
+    cursor:pointer;
+    color: white;
+    border: 3px solid #08803a;
+
+}
+a{
+    text-decoration: none; 
+    display: block; 
+    font-size: large;
+}
+.forget{
+    font-size: medium;
+    color: rgb(92, 7, 7);
+}
+@media (max-width: 768px) {
+    .container{
+        flex-direction: column;
+        padding: 20px;
+        max-height: 75%;
+    }
+    .house{
+        height: 30vw;
+    }
+    form{
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
