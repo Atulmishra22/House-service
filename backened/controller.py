@@ -23,10 +23,16 @@ def login(msg):
             return redirect(url_for("adminDashboard"))
         elif user == "Professional":
             prof = Professional.query.filter_by(email=usrname, password=pwd).first()
-            return redirect(url_for("professionalDashboard", id=prof.id))
+            if prof:
+                return redirect(url_for("professionalDashboard", id=prof.id))
+            else:
+                return render_template("login.html", msg="wrong credentials")
         elif user == "Customer":
             cust = Customer.query.filter_by(email=usrname, password=pwd).first()
-            return redirect(url_for("customerDashboard", user=cust.name))
+            if cust:
+                return redirect(url_for("customerDashboard", user=cust.name))
+            else:
+                return render_template("login.html", msg="wrong credentials")
         else:
             return render_template("login.html", msg="wrong credentials")
     return render_template("login.html", msg=msg)
