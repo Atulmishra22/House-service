@@ -1,0 +1,166 @@
+{% extends 'admin_dashboard.html' %} {% block content %}
+
+<div class="container-fluid py-3 bg-warning" id="search">
+  <div class="row">
+    <form
+      method="post"
+      action="{{ url_for('search') }}"
+      class="d-flex"
+      role="search"
+    >
+      <div class="col">
+        <label for="searchtype" id="search-type" class="fw-bold h4"
+          >search by:</label
+        >
+        <select
+          id="searchtype"
+          name="search_by"
+          class="border border-primary rounded ms-3 p-2 h5"
+        >
+          <option value="service-request">Service request</option>
+          <option value="customers">Customers</option>
+          <option value="professionals">Professionals</option>
+        </select>
+      </div>
+      <div class="col">
+        <div class="d-flex">
+          <input
+            name="searched"
+            id="search-input"
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="conatiner">
+  {% if search_by and search_query %}
+  <p class="m-3 h5">
+    search for: "{{ search_query | default('all') }}" in {{search_by | replace('-', ' ')}}
+  </p>
+  {% endif %}
+  <!-- conatiner for different searches -->
+
+  <div id="search-results" class="my-3 container">
+    {% if search_by == 'service-request' %}
+    <div class="accordion" id="Service-request">
+      <div class="accordion-item border border-primary">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#service-request-collapse"
+            aria-expanded="true"
+            aria-controls="service-request-collapse"
+          >
+            <div class="container row">
+              <h5 class="col">Id</h5>
+              <h5 class="col">Professional</h5>
+              <h5 class="col">Request Date</h5>
+              <h5 class="col">Status(R/A/C)</h5>
+            </div>
+          </button>
+        </h2>
+        <div
+          id="service-request-collapse"
+          class="accordion-collapse collapse show"
+          data-bs-parent="#Service-request"
+        >
+          <div class="accordion-body">
+            {% for service in services %}
+            <div class="conatiner row">
+              <div class="col">
+                <a href="#101" class="fw-bold">{{service.id}}</a>
+              </div>
+              <div class="col">
+                <p class="">{{service.name}}</p>
+              </div>
+              <div class="col">
+                <p class="">{{ service.price}}</p>
+              </div>
+              <div class="col">
+                <a
+                  href="{{ url_for('del_mod_service',task='modify',id=service.id) }}"
+                  class="btn btn-outline-secondary"
+                  >Modify</a
+                >
+                <a
+                  href="{{ url_for('del_mod_service',task='delete',id=service.id) }}"
+                  class="btn btn-outline-danger"
+                  >Delete</a
+                >
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- professional search -->
+
+    {% elif search_by == 'professionals' %}
+    <div class="accordion mb-4" id="Professional">
+      <div class="accordion-item border border-primary">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#professionalOne"
+            aria-expanded="true"
+            aria-controls="professionalOne"
+          >
+            <div class="container row">
+              <h4 class="col">ID</h4>
+              <h4 class="col">Name</h4>
+              <h4 class="col">Experience(yrs)</h4>
+              <h4 class="col">Service</h4>
+              <h4 class="col">Action</h4>
+            </div>
+          </button>
+        </h2>
+        <div
+          id="professionalOne"
+          class="accordion-collapse collapse show"
+          data-bs-parent="#Professional"
+        >
+          <div class="accordion-body">
+            {% for service in services %}
+            <div class="conatiner row">
+              <div class="col">
+                <a href="#101" class="fw-bold">101</a>
+              </div>
+              <div class="col">
+                <p class="">Shyam</p>
+              </div>
+              <div class="col">
+                <p class="">Kitchen Cleaning</p>
+              </div>
+              <div class="col">
+                <p class="">2000</p>
+              </div>
+              <div class="col">
+                <a href="#" class="btn btn-warning">Accept</a>
+                <a href="#" class="btn btn-warning">Reject</a>
+                <a href="#" class="btn btn-warning">Delete</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- customers search -->
+
+    {% endif %}
+  </div>
+</div>
+{% endif %} {% endblock content %}
