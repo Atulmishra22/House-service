@@ -14,7 +14,7 @@ def search_service_price(price):
 
 #search service by time
 def search_service_time(time):
-    services = Service.query.filter(Service.time.ilike(f'%{time}%')).all()
+    services = Service.query.filter(Service.time_required.ilike(f'%{time}%')).all()
     return services
 
 #search professional by name
@@ -59,22 +59,22 @@ def search_customer_address(address):
 
 #search service_request by service name
 def search_sr_servicename(name):
-    service_id = Service.query.filter_by(name= name).first()
+    service_id = Service.query.filter(Service.name.ilike(f'%{name}%')).first()
     service_requests = ServiceRequest.query.filter_by(service_id=service_id).all()
     return service_requests
 
 def search_sr_professionalname(name):
-    professional_id = Professional.query.filter_by(name= name).first()
+    professional_id = Professional.query.filter(Professional.name.ilike(f'%{name}%')).first()
     service_requests = ServiceRequest.query.filter_by(professional_id=professional_id).all()
     return service_requests
 
 def search_sr_customername(name):
-    customer_id = Customer.query.filter_by(name=name).first()
+    customer_id = Customer.query.filter(Customer.name.ilike(f'%{name}%')).first()
     service_requests = ServiceRequest.query.filter_by(customer_id=customer_id).all()
     return service_requests
 
 def search_sr_status(status):
-    service_requests = ServiceRequest.query.filter_by(service_status=status).all()
+    service_requests = ServiceRequest.query.filter(ServiceRequest.service_status.ilike(f'%{status}%')).all()
     return service_requests
 
 def data_from_service(param):
@@ -88,7 +88,7 @@ def data_from_service(param):
     elif time:
         return time
     else:
-        return None
+        return []
     
 def data_from_professional(param):
     name = search_professional_name(param)
@@ -107,7 +107,7 @@ def data_from_professional(param):
     elif status:
         return status
     else:
-        return None
+        return []
     
 def data_from_customer(param):
     name = search_customer_name(param)
@@ -120,7 +120,7 @@ def data_from_customer(param):
     elif pin:
         return pin
     else:
-        return None
+        return []
     
 def data_from_servicerequest(param):
     pname = search_sr_professionalname(param)
@@ -136,5 +136,5 @@ def data_from_servicerequest(param):
     elif status:
         return status
     else:
-        return None
+        return []
     

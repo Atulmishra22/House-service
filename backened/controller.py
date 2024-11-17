@@ -117,13 +117,27 @@ def customerDashboard(user):
 def search():
     search_query = request.args.get("search_query") or ""
     search_by = request.args.get("search_by") or ""
-    if search_by == "":
-        pass
-    services = Service.query.filter(Service.name.ilike(f'%{search_query}%')).all()
-
-    return render_template(
-        "search.html", search_by=search_by, search_query=search_query, services=services
-    )
+    if request.method == "POST":
+        search_query = request.form.get("searched")
+        search_by = request.form.get("search_by")
+        return redirect(url_for('search',search_query=search_query,search_by=search_by))
+    if search_by == "professionals":
+        professionals = data_from_professional(search_query)
+        return render_template("search.html", professionals=professionals, search_query=search_query, search_by=search_by)
+    elif search_by == "service":
+        services = data_from_service(search_query)
+        return render_template("search.html", services=services, search_query=search_query, search_by=search_by)
+    elif search_by == "customers":
+        customers = data_from_customer(search_query)
+        return render_template("search.html", customers=customers, search_query=search_query, search_by=search_by)
+    elif search_by == "service-request":
+        service_requests = data_from_servicerequest(search_query)
+        return render_template("search.html", service_requests=service_requests, search_query=search_query, search_by=search_by)
+    else:
+        services = Service.query.all()
+        return render_template(
+            "search.html", search_by=search_by, search_query=search_query, services=services
+        )
 
 
 @app.route("/logout")
