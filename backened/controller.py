@@ -117,9 +117,9 @@ def customerDashboard(user):
         "customer_dashboard.html", customer=cust, services=ser, ser_reqs=ser_reqs
     )
 
-@app.route('/professional_dashboard/<user>')
-def professionalDashboard(user):
-    prof = Professional.query.filter_by(name=user).first()
+@app.route('/professional_dashboard/<id>')
+def professionalDashboard(id):
+    prof = Professional.query.filter_by(id = id).first()
     ser_req = ServiceRequest.query.filter_by(professional_id=prof.id).all()
     return render_template('professional_dashboard.html', professional=prof, ser_req=ser_req)
 
@@ -148,6 +148,35 @@ def search():
         return render_template(
             "search.html", search_by=search_by, search_query=search_query, services=services
         )
+
+
+@app.route('/customer_dashboard/<user>/search',methods = ['GET','POST'])
+def customer_search(user):   #user take name input of customer as user
+    customer = Customer.query.filter_by(name = user).first()
+    search_query = request.args.get("search_query") or ""
+    search_by = request.args.get("search_by") or ""
+    if request.method == "POST":
+        search_query = request.form.get("searched")
+        search_by = request.form.get("search_by")
+        return redirect(url_for('customer_search',search_query=search_query,search_by=search_by,user=user))
+    #writing logic for search functionality
+    
+
+    return render_template('customer_search.html',customer = customer,search_query=search_query,search_by=search_by)
+
+@app.route('/professional_dashboard/<user>/search',methods = ['GET','POST'])
+def professional_search(user): #user take name input of professional as user
+    search_query = request.args.get("search_query") or ""
+    search_by = request.args.get("search_by") or ""
+    if request.method == "POST":    
+        search_query = request.form.get("searched")
+        search_by = request.form.get("search_by")
+        return redirect(url_for('professional_search',search_query=search_query,search_by=search_by,user =user))
+    #writing logic for search functionality
+
+
+    professional = Professional.query.filter_by(name = user).first()
+    return render_template('professional_search.html',professional = professional,search_query=search_query,search_by=search_by)
 
 
 @app.route("/logout")
@@ -235,15 +264,25 @@ def update_profile(user, id):
             prof.password = request.form["pwd"]
             prof.name = request.form["name"]
             prof.address = request.form["address"]
-            prof.pincode = request.form["pin"]
+            prof.pincode = request.form["pincode"]
             prof.phone = request.form["phone"]
             prof.description = request.form["description"]
-            prof.service_type = request.form["service"]
             db.session.commit()
-            return redirect(url_for("professionalDashboard", user=prof.name))
+            return redirect(url_for("professionalDashboard", id=prof.id))
         return render_template("profile_info.html", professional=prof,user ='professional')
 
 @app.route('/admin/<user>/<id>/<status>')
 def update_status_admin(user,id,status):
     update = status_changer_user(user=user,id=id,status=status)
     return redirect(url_for('adminDashboard'))
+
+@app.route('/summary/<user>/<id>')
+def summary(user):
+    if user == 'customer':
+        customer = Customer.query.filter_by(id=id).first()
+        return render_template('summary_all.html',customer=customer,user = user)
+    elif user == 'professional':
+        professional = Professional.query.get_or_404(id)
+        return render_template('summary_all.html',professional=professional,user=user)
+    else:
+        render_template('summary_all.html',user=user)

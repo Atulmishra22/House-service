@@ -34,12 +34,14 @@
                         <a class="nav-link text-white" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="{{ url_for('search' ) }}">Search</a>
+                        <a class="nav-link text-white" aria-current="page" href="{{ url_for('customer_search',user = customer.name ) }}">Search</a>
                     </li>    
                 </ul>
             </div>   
     </div>    
 </nav>
+{% block search_customer %}
+    
 
 <!-- body area -->
     <div class="container-fluid">
@@ -175,5 +177,5 @@
         </div>
           
     </div>
-    
+{% endblock search_customer %}
 {% endblock content %}

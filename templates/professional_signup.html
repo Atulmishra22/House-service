@@ -64,6 +64,13 @@
     </style>
 </head>
 <body>
+    <nav class="navbar bg-primary" id="Navbar">
+        <div class="col container-lg nav-items">
+          <a href="{{ url_for('home') }}" class="text-decoration-none">
+            <h1 class="fw-muted text-white">House Service</h1>
+          </a>
+        </div>
+    </nav>    
     <div class="container">
         <div class="title">Service Professional Signup</div>
         <form action="{{ url_for('register', registerer='professional') }}" method="post" enctype="multipart/form-data">

@@ -1,0 +1,28 @@
+{% if user = 'customer' %}
+{% extends 'customer_dashboard.html' %} 
+{% block search_customer %} <!-- import customer -->
+    <div class="conatiner text-center lead">
+        Summary
+    </div>
+{% endblock search_customer %}   
+
+{% elif user = 'professional' %} <!-- professional user checking -->
+
+{% extends 'professional_dashboard.html' %}
+{% block professional %} <!-- import professional -->
+    <div class="conatiner text-center lead">
+        Summary
+    </div>
+{% endblock professional %}
+
+{% else %} <!--  admin -->
+
+{% extends 'admin_dashboard.html' %}
+{% block content %}
+    <div class="conatiner text-center lead">
+        Summary
+    </div>
+    
+{% endblock content %}
+
+{% endif %}

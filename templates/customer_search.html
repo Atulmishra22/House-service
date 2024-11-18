@@ -1,0 +1,96 @@
+{% extends 'customer_dashboard.html' %}
+<!-- import customer for customer name in customer dashboard -->
+{% block search_customer %}
+<div class="container-fluid py-3 bg-warning" id="search">
+    <div class="row">
+      <form
+        method="post"
+        action="{{ url_for('customer_search',user = customer.name) }}"
+        class="d-flex"
+        role="search"
+      >
+        <div class="col">
+          <label for="searchtype" id="search-type" class="fw-bold h4"
+            >search by:</label
+          >
+          <select
+            id="searchtype"
+            name="search_by"
+            class="border border-primary rounded ms-3 p-2 h5"
+          >
+          <option value="service">Service Name</option>
+            <option value="service-request">Service Request</option>
+            <option value="pincode">Pin Code </option>
+            <option value="location">Location</option>
+          </select>
+        </div>
+        <div class="col">
+          <div class="d-flex">
+            <input
+              name="searched"
+              id="search-input"
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- search results -->
+  <div class="container border border-2 rounded border-dark p-3 m-3">
+    <div class="conatiner">
+        <h4 class="text-center">{{ search_query }}</h4>
+    </div>
+    {% for service in services %}
+        
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 col-xl-3">
+                <div class="card border border-2 border-dark p-3 m-3">
+                    <div class="card-header text-center">
+                        {{ service.name }}
+                    </div>
+                    <div class="card-body text-center">
+                        <table class="table border border-primary">
+                            <tr>
+                                <th>Service ID:</th>
+                                <td>{{ ser.id }}</td>
+                            </tr>
+                            <tr>
+                                <th> Name:</th>
+                                <td>{{ ser.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price:</th>
+                                <td>Rs.  {{ ser.price }}</td>
+                            </tr>
+                            <tr>
+                                <th>Time Required:</th>
+                                <td>{{ ser.time_required }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>{{ ser.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Rating:</th>
+                                <td>{{ ser.review.rating }}</td>
+                            </tr>
+                            <tr>
+                                <td><a href="" class="btn btn-warning">Book</a></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>   
+    
+{% endblock search_customer %}
