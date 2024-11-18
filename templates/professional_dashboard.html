@@ -24,7 +24,7 @@
             <div class="collapse navbar-collapse row" id="navbarNav">
                 <ul class="navbar-nav ms-5 col">
                     <li class="nav-item ">
-                    <a class="nav-link text-white" aria-current="page" href="{{ url_for('professionalDashboard') }}">Home</a>
+                    <a class="nav-link text-white" aria-current="page" href="{{ url_for('professionalDashboard'), user = professional.name }}">Home</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link text-white" aria-current="page" href="#summary">Summary</a>
@@ -49,37 +49,37 @@
             <div class="accordion" id="Services">
                 <div class="accordion-item border border-primary">
                   <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#service-collapse" aria-expanded="true" aria-controls="service-collapse">
+                    <button class="accordion-button" type="button"  data-bs-target="#service-collapse" aria-expanded="true" >
                       <div class="container row">
-                        <h4 class="col">ID</h4>
-                        <h4 class="col">Service name</h4>
-                        <h4 class="col">Base price</h4>
-                        <h4 class="col">Action</h4>
+                        <h4 class="col-1">ID</h4>
+                        <h4 class="col-3">Customer name</h4>
+                        <h4 class="col-4">Location</h4>
+                        <h4 class="col-4">Action</h4>
                       </div>
                     </button>
                   </h2>
-                  <div id="service-collapse" class="accordion-collapse collapse show" data-bs-parent="#Services">
+                  <div id="service-collapse" class="accordion-collapse  show" data-bs-parent="#Services">
                     <div class="accordion-body">
                         {% if services | length == 0 %}
                         <div class="col">
-                            <p class="lead">No Service found</p>
+                            <p class="lead">No Service request found</p>
                         </div>
                             
                         {% else %}
-                            {% for service in services %}
+                            {% for req in ser_req %}
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                    <div class="col">
-                                        <a href="{{ url_for('showDetailAdmin',id=service.id,item = 'service') }}" class="fw-bold btn btn-outline-info">{{service.id}}</a>
+                                    <div class="col-1">
+                                        <p  class="fw-bold btn btn-outline-info">{{req.id}}</p>
                                     </div>
-                                    <div class="col">
-                                        <p >{{ service.name }}</p>
+                                    <div class="col-3">
+                                        <p >{{ req.customer.name }}</p>
                                     </div>
-                                    <div class="col">
-                                        <p > {{ service.price }}</p>
+                                    <div class="col-4">
+                                        <p > {{ req.customer.location }}{{ ser_req.customer.pincode }}</p>
                                     </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-outline-secondary">Modify</a>
-                                        <a href="{{ url_for('deleteService',id=service.id) }}" class="btn btn-outline-danger">Delete</a>
+                                    <div class="col-4">
+                                        <a href="#" class="btn btn-outline-secondary">Accept</a>
+                                        <a href="#" class="btn btn-outline-danger">Reject</a>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -87,10 +87,8 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="justify-content-start mt-2">
-                <a href="{{ url_for('addService') }}" class="btn btn-outline-primary">Add Service</a>
             </div>
+              
         </div>
         <!-- closed Service -->
         <div class="mt-3 mb-2 bg-warning p-1 border rounded">
@@ -101,33 +99,33 @@
             <div class="accordion" id="Services">
                 <div class="accordion-item border border-primary">
                     <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#service-collapse" aria-expanded="true" aria-controls="service-collapse">
+                    <button class="accordion-button" type="button"  data-bs-target="#service-collapse" aria-expanded="true" >
                         <div class="container row">
-                        <h4 class="col">ID</h4>
-                        <h4 class="col">Service name</h4>
-                        <h4 class="col">Base price</h4>
-                        <h4 class="col">Action</h4>
+                        <h4 class="col-1">ID</h4>
+                        <h4 class="col-3">Customer name</h4>
+                        <h4 class="col-4">Location</h4>
+                        <h4 class="col-4">Action</h4>
                         </div>
                     </button>
                     </h2>
-                    <div id="service-collapse" class="accordion-collapse collapse show" data-bs-parent="#Services">
+                    <div id="service-collapse" class="accordion-collapse  show" data-bs-parent="#Services">
                     <div class="accordion-body">
-                        {% if services | length == 0 %}
+                        {% ser_req | length == 0 %}
                         <div class="col">
                             <p class="lead">No Service found</p>
                         </div>
                             
                         {% else %}
-                            {% for service in services %}
+                            {% for req in ser_req %}
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
                                     <div class="col">
-                                        <a href="{{ url_for('showDetailAdmin',id=service.id,item = 'service') }}" class="fw-bold btn btn-outline-info">{{service.id}}</a>
+                                        <p>{{ req.id }}</p>
                                     </div>
                                     <div class="col">
-                                        <p >{{ service.name }}</p>
+                                        <p >{{ req.customer_id.name }}</p>
                                     </div>
                                     <div class="col">
-                                        <p > {{ service.price }}</p>
+                                        <p > {{ req. }}</p>
                                     </div>
                                     <div class="col">
                                         <a href="#" class="btn btn-outline-secondary">Modify</a>

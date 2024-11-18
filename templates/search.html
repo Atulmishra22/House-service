@@ -175,7 +175,7 @@
                 </h2>
                 <div id="professionalOne" class="accordion-collapse collapse show" data-bs-parent="#Professional">
                   <div class="accordion-body">
-                      {% if professionals | length == 0 %}
+                      {% if not professionals %}
                       <div class="col">
                           <p class="lead">No professional found</p>
                       </div>

@@ -76,16 +76,16 @@
                 <input type="password" class="form-control" name="pwd" id="password" required>
             </div>
             <div class="mb-3">
-                <label for="fullname" class="form-label">Fullname :</label>
-                <input type="text" class="form-control" name="name" id="fullname" required>
+                <label for="phone" class="form-label">Phone :</label>
+                <input type="text" class="form-control" name="phone" id="phone" required>
             </div>
             <div class="mb-3">
                 <label for="service" class="form-label">Service Name :</label>
                 <select class="form-select" name="service" id="service" required>
                     <option selected>select available services</option>
-                    <option value="1">Service 1</option>
-                    <option value="2">Service 2</option>
-                    <option value="3">Service 3</option>
+                    {% for service in services %}
+                    <option value="{{ service.name }}">{{ service.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="mb-3">

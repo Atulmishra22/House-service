@@ -49,6 +49,9 @@
             <a href="{{ url_for('update_profile',user = 'customer',id = customer.id) }}" class="btn btn-outline-info m-2">Profile Info</a>
         </div>
         <!--All Services -->
+        {% block particular_service %}
+            
+        
         <div class="container border border-2 rounded border-dark p-3 m-3">
             <div class="row bg-light pt-4">
                 <h4 class="text-center">Looking For</h4>
@@ -57,7 +60,7 @@
             <div class="my-5 row container-fluid align-items-center justify-content-center">
                 
                     
-                <div class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <div href="{{ url_for('particular_service',service_type = 'cleaning',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -71,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <div href="{{ url_for('particular_service',service_type = 'repairing',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -85,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <div href="{{ url_for('particular_service',service_type = 'saloon',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -99,7 +102,7 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <div href="{{ url_for('particular_service',service_type = 'electrician',user = customer.name) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -115,11 +118,12 @@
                 
             </div>    
         </div> 
+        {% endblock particular_service %}
 
         <!-- detail of privious history -->
 
         <div class="mt-3 mb-2 bg-warning p-1 border rounded">
-            <h4 class="fw-bold">Service Request:</h2>
+            <h4 class="fw-bold">Service Request: History</h2>
         </div>
         <div class="container">
             
@@ -147,7 +151,7 @@
                             {% for ser_req in service_requests %}
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
                                     <div class="col-1">
-                                        <a href="{{ url_for('show_detail_admin',item = 'service_request',id = ser_req.id) }}" class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
+                                        <a class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
                                     </div>
                                     <div class="col-3">
                                         <p >{{ ser_req.service.name }}</p>

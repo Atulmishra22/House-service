@@ -2,9 +2,9 @@
 
 
 {% block content %}
-    <div class="conatiner justify-content-center m-3">
+    <div class="container-fluid justify-content-center m-3">
         {% if item == 'service' %}
-            <div class="my-5 row container-fluid align-items-center justify-content-center">
+            <div class="my-5 row container align-items-center justify-content-center">
                 <div class="col-8 col-lg-4 col-xl-4 my-4 ">
                     <div class="card border-primary">
                         <div class="card-header text-center">
@@ -59,12 +59,20 @@
                                 <td>{{ customer.email }}</td>
                             </tr>
                             <tr>
+                                <th>Phone:</th>
+                                <td>{{ customer.phone }}</td>
+                            </tr>
+                            <tr>
                                 <th>Address:</th>
                                 <td>{{ customer.address }}</td>
                             </tr>
                             <tr>
                                 <th>Pincode:</th>
                                 <td>{{ customer.pincode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>{{ customer.status }}</td>
                             </tr>
                         </table>
                     </div>
@@ -98,7 +106,7 @@
                             </tr>
                             <tr>
                                 <th>Date of Request:</th>
-                                <td>{{ serreq.date_of_request }}</td>
+                                <td>{{ serreq.date_of_request.strftime('%Y-%m-%d %H:%M') }}</td>
                             </tr>
                             <tr>
                                 <th>Date of completion:</th>
@@ -135,8 +143,12 @@
                                 <td>{{ prof.name }}</td>
                             </tr>
                             <tr>
+                                <th>Phone:</th>
+                                <td>{{ prof.phone }}</td>
+                            </tr>
+                            <tr>
                                 <th>Date Created:</th>
-                                <td>{{ prof.Date_created }}</td>
+                                <td>{{ prof.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
                             </tr>
                             <tr>
                                 <th>Service:</th>

@@ -1,4 +1,4 @@
-from .modals import Admin , Professional, Customer,Service,ServiceRequest,Review
+from .modals import db,Admin , Professional, Customer,Service,ServiceRequest,Review
 
 
 # search service by name
@@ -38,8 +38,8 @@ def search_professional_pincode(pincode):
     return professionals
 
 #search professional by service_type
-def search_professional_service_type(service_type):
-    professionals = Professional.query.filter(Professional.service_type.ilike(f'%{service_type}%')).all
+def search_professional_service_type(service):
+    professionals = Professional.query.filter(Professional.service_type.ilike(f'%{service}%')).all()
     return professionals
 
 #search customer by name
@@ -55,6 +55,16 @@ def search_customer_pincode(pincode):
 #search customer by address
 def search_customer_address(address):
     customers = Customer.query.filter(Customer.address.ilike(f'%{address}%')).all()
+    return customers
+
+#search customer by status
+def search_customer_status(status):
+    customers = Customer.query.filter(Customer.status.ilike(f'%{status}%')).all()
+    return customers
+
+#search customer by contact
+def search_customer_contact(contact):
+    customers = Customer.query.filter(Customer.phone.ilike(f'%{contact}%')).all()
     return customers
 
 #search service_request by service name
@@ -111,12 +121,18 @@ def data_from_professional(param):
     
 def data_from_customer(param):
     name = search_customer_name(param)
+    phone = search_customer_contact(param)
+    status = search_customer_status(param)
     address = search_customer_address(param)
     pin = search_customer_pincode(param)
     if name:
         return name
     elif address:
-        return address  
+        return address
+    elif phone:
+        return phone
+    elif status:
+        return status
     elif pin:
         return pin
     else:
@@ -138,3 +154,14 @@ def data_from_servicerequest(param):
     else:
         return []
     
+def status_changer_user(user,status,id):
+    if user == 'customer':
+        cust = Customer.query.filter_by(id = id).first()
+        cust.status = status
+        db.session.commit()
+        
+    else:
+        prof = Professional.query.filter_by(id=id).first()
+        prof.status = status
+        db.session.commit()
+        

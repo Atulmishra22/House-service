@@ -20,12 +20,12 @@ class Professional(db.Model):
     phone = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(200), nullable=False)
     pincode = db.Column(db.Integer, nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.now())
+    date_created = db.Column(db.DateTime, default=datetime.now,nullable=False)
     description = db.Column(db.Text, nullable=True)
     service_type = db.Column(db.String(120), nullable=False)
     experience = db.Column(db.Integer, nullable=False)
     file_path = db.Column(db.String(255), nullable=False)
-    status = db.Column(db.String(30), default="pending")
+    status = db.Column(db.String(30), default="pending",nullable=False)
     service_requests = db.relationship(
         "ServiceRequest",
         backref="professional",
@@ -42,6 +42,8 @@ class Customer(db.Model):
     name = db.Column(db.String(120), nullable=False)
     address = db.Column(db.String(200), nullable=False)
     pincode = db.Column(db.Integer, nullable=False)
+    phone = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(30), default="accepted", nullable=False)
     service_requests = db.relationship("ServiceRequest", backref="customer", lazy=True, cascade="all, delete-orphan")
     reviews = db.relationship("Review", backref="customer", lazy=True, cascade="all, delete-orphan")
 
@@ -52,7 +54,7 @@ class Service(db.Model):
     name = db.Column(db.String(120), nullable=False)
     price = db.Column(db.Float, nullable=False)
     time_required = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.Text, nullable=True)
+    description = db.Column(db.Text,nullable = True)
     service_requests = db.relationship("ServiceRequest", backref="service", lazy=True, cascade="all, delete-orphan")
 
 
@@ -62,7 +64,7 @@ class ServiceRequest(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey("service.id"), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
     professional_id = db.Column(db.Integer, db.ForeignKey("professional.id"), nullable=False)
-    date_of_request = db.Column(db.DateTime, default=datetime.now())
+    date_of_request = db.Column(db.DateTime, default=datetime.now,nullable=False)
     date_of_completion = db.Column(db.DateTime, nullable=True)
     service_status = db.Column(db.String(50), nullable=False, default="requested")
     remarks = db.Column(db.Text, nullable=True)

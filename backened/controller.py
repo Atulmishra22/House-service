@@ -45,6 +45,7 @@ def register(registerer):
             email = request.form.get("email")
             pwd = request.form.get("pwd")
             name = request.form.get("name")
+            phone = request.form.get("phone")
             service = request.form.get("service")
             address = request.form.get("address")
             exp = request.form.get("exp")
@@ -58,21 +59,24 @@ def register(registerer):
                     email=email,
                     password=pwd,
                     name=name,
+                    phone=phone,
                     service_type=service,
                     experience=exp,
                     file_path=doc,
                     address=address,
-                    pincode=pin,
+                    pincode=pin
                 )
                 db.session.add(user)
                 db.session.commit()
             return redirect(url_for("login", msg="sucessfully registered! now login"))
-        return render_template("professional_signup.html")
+        services = Service.query.all()
+        return render_template("professional_signup.html",services = services)
     else:
         if request.method == "POST":
             email = request.form.get("email")
             pwd = request.form.get("pwd")
             name = request.form.get("name")
+            phone = request.form.get('phone')
             address = request.form.get("address")
             pin = request.form.get("pin")
             usr = Customer.query.filter_by(email=email).first()
@@ -80,7 +84,7 @@ def register(registerer):
                 return redirect(url_for("login", msg="this email is already in used"))
             else:
                 user = Customer(
-                    email=email, password=pwd, name=name, address=address, pincode=pin
+                    email=email, password=pwd, name=name, address=address, pincode=pin,phone = phone
                 )
                 db.session.add(user)
                 db.session.commit()
@@ -112,6 +116,12 @@ def customerDashboard(user):
     return render_template(
         "customer_dashboard.html", customer=cust, services=ser, ser_reqs=ser_reqs
     )
+
+@app.route('/professional_dashboard/<user>')
+def professionalDashboard(user):
+    prof = Professional.query.filter_by(name=user).first()
+    ser_req = ServiceRequest.query.filter_by(professional_id=prof.id).all()
+    return render_template('professional_dashboard.html', professional=prof, ser_req=ser_req)
 
 @app.route("/dashboard/admin/search", methods=["GET", "POST"])
 def search():
@@ -199,6 +209,11 @@ def show_detail_admin(item, id):
         prof = Professional.query.filter_by(id=id).first()
         return render_template("show_admin_detail.html", prof=prof, item=item)
 
+@app.route('/<user>/particular_service/<service_type>')
+def particular_service(user, service_type):
+    
+    render_template('particular_service',user= user,service_type=service_type)
+
 
 @app.route("/view/<user>/profile/<id>", methods=["GET", "POST"])
 def update_profile(user, id):
@@ -212,4 +227,23 @@ def update_profile(user, id):
             cust.pincode = request.form["pin"]
             db.session.commit()
             return redirect(url_for("customerDashboard", user=cust.name))
-        return render_template("profile_info.html", customer=cust)
+        return render_template("profile_info.html", customer=cust,user ='customer')
+    else:
+        prof = Professional.query.get_or_404(id)
+        if request.method == "POST":
+            prof.email = request.form["email"]
+            prof.password = request.form["pwd"]
+            prof.name = request.form["name"]
+            prof.address = request.form["address"]
+            prof.pincode = request.form["pin"]
+            prof.phone = request.form["phone"]
+            prof.description = request.form["description"]
+            prof.service_type = request.form["service"]
+            db.session.commit()
+            return redirect(url_for("professionalDashboard", user=prof.name))
+        return render_template("profile_info.html", professional=prof,user ='professional')
+
+@app.route('/admin/<user>/<id>/<status>')
+def update_status_admin(user,id,status):
+    update = status_changer_user(user=user,id=id,status=status)
+    return redirect(url_for('adminDashboard'))
