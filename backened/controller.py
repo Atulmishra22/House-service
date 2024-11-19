@@ -277,7 +277,7 @@ def update_status_admin(user,id,status):
     return redirect(url_for('adminDashboard'))
 
 @app.route('/summary/<user>/<id>')
-def summary(user):
+def summary(user,id):
     if user == 'customer':
         customer = Customer.query.filter_by(id=id).first()
         return render_template('summary_all.html',customer=customer,user = user)
@@ -285,4 +285,5 @@ def summary(user):
         professional = Professional.query.get_or_404(id)
         return render_template('summary_all.html',professional=professional,user=user)
     else:
-        render_template('summary_all.html',user=user)
+        
+        return render_template('summary_all.html',user=user)

@@ -28,7 +28,7 @@
                     <a class="nav-link text-white" aria-current="page" href="{{ url_for('customerDashboard',user=customer.name) }}">Home</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link text-white" aria-current="page" href="#summary">Summary</a>
+                        <a class="nav-link text-white" aria-current="page" href="{{ url_for('summary', user ='customer',id=customer.id) }}">Summary</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link text-white" aria-current="page" href="{{ url_for('logout') }}">Logout</a>

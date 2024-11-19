@@ -40,7 +40,7 @@
                         <a class="nav-link text-white" aria-current="page" href="{{ url_for('adminDashboard') }}">Home</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white" aria-current="page" href="#summary">Summary</a>
+                            <a class="nav-link text-white" aria-current="page" href="{{ url_for('summary',user='admin',id = 1) }}">Summary</a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
@@ -54,7 +54,7 @@
     </nav>
     
     <!-- Customer,Professional details  -->
-    {% block content %}
+    {% block admin_content %}
         
     <!-- Service -->
     <section id="main-data" class="container-fluid" >
@@ -283,7 +283,7 @@
         </div>
 
     </section>
-    {% endblock content %}
+    {% endblock admin_content %}
     <!-- footer -->
     <div style="width: 100vw;"> 
         <footer class="bg-dark text-white text-center p-2">
