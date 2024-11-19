@@ -165,11 +165,11 @@
                 <h2 class="accordion-header">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#professionalOne" aria-expanded="true" aria-controls="professionalOne">
                     <div class="container row">
-                      <h4 class="col">ID</h4>
-                      <h4 class="col">Name</h4>
-                      <h4 class="col">Experience(yrs)</h4>
-                      <h4 class="col">Service</h4>
-                      <h4 class="col">Action</h4>
+                      <h4 class="col-1">ID</h4>
+                      <h4 class="col-3 text-center">Name</h4>
+                      <h4 class="col-2 text-center">Experience(yrs)</h4>
+                      <h4 class="col-3 text-center">Service</h4>
+                      <h4 class="col-3 text-center">Action</h4>
                     </div>
                   </button>
                 </h2>
@@ -184,28 +184,34 @@
 
                           {% for prof in professionals %}
                           <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                              <div class="col">
+                              <div class="col-1">
                                   <a href="{{ url_for('show_detail_admin',id=prof.id,item = 'professional') }}" class=" fw-bold btn btn-outline-info">{{prof.id}}</a>
                               </div>
-                              <div class="col">
+                              <div class="col-3 text-center">
                                   <p >{{ prof.name }}</p>
                               </div>
-                              <div class="col">
+                              <div class="col-2 text-center">
                                   <p >{{ prof.experience }}</p>
                               </div>
-                              <div class="col">
+                              <div class="col-3 text-center">
                                   <p >{{ prof.service_type }}</p>
                               </div>
-                              {% if prof.is_approved == 'Approved' %}
-                              <div class="col">
-                                  <a href="#" class="btn btn-outline-danger">Block</a>
-                                  <a href="#" class="btn btn-outline-warning">Unblock</a>
-                              </div>
-                              {% endif %}
-                              <div class="col">
-                                  <a href="#" class="btn btn-outline-warning">Approved</a>
-                                  <a href="#" class="btn btn-outline-danger">Unapproved</a>
-                          </div>
+                              {% if prof.status == 'Approved' %}
+                                <div class="col-3 text-center">
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Blocked') }}" class="btn btn-danger">Block</a>
+                                </div>
+                                {% elif prof.status == 'Blocked' or prof.status == 'Rejected' %}
+                                <div class="col-3 text-center">
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Approved') }}" class="btn btn-primary">Unblock</a>
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Delete') }}" class="btn btn-outline-danger">Delete</a>
+                                </div>
+
+                                {% else %}
+                                <div class="col-3 text-center">
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Approved') }}" class="btn btn-info">Approve</a>
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Rejected') }}" class="btn btn-outline-danger">Reject</a>
+                                </div>
+                                {% endif %}
                           </div>
                           {% endfor %}
                       {% endif %}    
@@ -226,10 +232,10 @@
                 <h2 class="accordion-header">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#customer-collapse" aria-expanded="true" aria-controls="customer">
                     <div class="container row">
-                      <h4 class="col">ID</h4>
-                      <h4 class="col">Customer name</h4>
-                      <h4 class="col">Pincode</h4>
-                      <h4 class="col">Action</h4>
+                      <h4 class="col-1">ID</h4>
+                      <h4 class="col-4 text-center">Customer name</h4>
+                      <h4 class="col-4 text-center">Pincode</h4>
+                      <h4 class="col-3 text-center">Action</h4>
                     </div>
                   </button>
                 </h2>
@@ -244,19 +250,23 @@
 
                           {% for customer in customers %}
                               <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                  <div class="col">
+                                  <div class="col-1">
                                       <a href="{{ url_for('show_detail_admin',id=customer.id,item = 'customer') }}" class="fw-bold btn btn-outline-info">{{ customer.id }}</a>
                                   </div>
-                                  <div class="col">
+                                  <div class="col-4 text-center">
                                       <p>{{ customer.name }}</p>
                                   </div>
-                                  <div class="col">
+                                  <div class="col-4 text-center">
                                       <p >{{ customer.pincode}}</p>
                                   </div>
-                                  <div class="col">
-                                      <a href="#" class="btn btn-outline-primary">Block</a>
-                                      <a href="#" class="btn btn-outline-primary">Unblock</a>
-                                  </div>
+                                  <div class="col-3 text-center">
+                                    {% if customer.status == 'Blocked' %}
+                                    <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Active') }}" class="btn btn-primary">Unblock</a> 
+                                    <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Delete') }}" class="btn btn-outline-danger">Delete</a>   
+                                    {% else %}
+                                    <a href="{{ url_for('update_status_admin',user = 'customer',id = customer.id,status='Blocked' ) }}" class="btn btn-outline-danger">Block</a>
+                                    {% endif %}
+                                </div>
                               </div>
                           {% endfor %} 
                       {% endif %}   

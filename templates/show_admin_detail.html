@@ -127,7 +127,7 @@
         </div>
         {% else %}
         <div class="my-5 row container-fluid align-items-center justify-content-center">
-            <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+            <div class="col-8 col-lg-4 col-xl-6 my-4 ">
                 <div class="card border-primary">
                     <div class="card-header text-center">
                         Professional Detail
@@ -160,7 +160,7 @@
                             </tr>
                             <tr>
                                 <th>Resume:</th>
-                                <td>{{ prof.file_path }}</td>
+                                <td>{{ prof.file_path | replace('./professional_verification/','') }}</td>
                             </tr>
                             <tr>
                                 <th>Address:</th>
@@ -177,6 +177,9 @@
                             <tr>
                                 <th>Status:</th>
                                 <td>{{ prof.status }}</td>
+                            </tr>
+                            <tr>
+                                <iframe src='{{ url_for('professional_file', filename= prof.file_path | replace('./professional_verification/','')) }}' width="600" height="400"></iframe>
                             </tr>
                         </table>
                     </div>

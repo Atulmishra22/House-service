@@ -1,4 +1,5 @@
 from .modals import db,Admin , Professional, Customer,Service,ServiceRequest,Review
+from werkzeug.utils import secure_filename
 
 
 # search service by name
@@ -157,11 +158,25 @@ def data_from_servicerequest(param):
 def status_changer_user(user,status,id):
     if user == 'customer':
         cust = Customer.query.filter_by(id = id).first()
-        cust.status = status
+        if status != 'Delete':
+            cust.status = status
+        else:
+            db.session.delete(cust)
         db.session.commit()
         
     else:
         prof = Professional.query.filter_by(id=id).first()
-        prof.status = status
+        if status != 'Delete':
+            prof.status = status
+        else:
+            db.session.delete(cust)
         db.session.commit()
         
+
+def file_url(file,name):
+    if file.filename:
+        filename = secure_filename(file.filename)
+        path = './professional_verification/'+ name + '_'+ filename
+        file.save(path)
+        return path
+    

@@ -210,7 +210,8 @@
                                 </div>
                                 {% elif prof.status == 'Blocked' or prof.status == 'Rejected' %}
                                 <div class="col-3 text-center">
-                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Approved') }}" class="btn btn-outline-danger">Unblock</a>
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Approved') }}" class="btn btn-primary">Unblock</a>
+                                    <a href="{{ url_for('update_status_admin', user = 'professional',id = prof.id,status = 'Delete') }}" class="btn btn-outline-danger">Delete</a>
                                 </div>
 
                                 {% else %}
@@ -269,6 +270,7 @@
                                     <div class="col-3 text-center">
                                         {% if customer.status == 'Blocked' %}
                                         <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Active') }}" class="btn btn-primary">Unblock</a>   
+                                        <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Delete') }}" class="btn btn-outline-danger">Delete</a>   
                                         {% else %}
                                         <a href="{{ url_for('update_status_admin',user = 'customer',id = customer.id,status='Blocked' ) }}" class="btn btn-outline-danger">Block</a>
                                         {% endif %}

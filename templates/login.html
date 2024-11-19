@@ -8,7 +8,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css')}}">
 </head>
 <body>
-    
+    <nav class="navbar bg-primary" id="Navbar">
+        <div class="col container-lg nav-items">
+          <a href="{{ url_for('home') }}" class="text-decoration-none"
+            ><h1 class="fw-muted text-white">House Service</h1>
+          </a>
+          <h2 class="text-white">Login form</h2>
+        </div>
+    </nav>
     <div class="container">
         <div class="h-image">
             <img class="house" src="{{ url_for('static', filename='images/houseservice.png')}}" alt="">
@@ -27,7 +34,7 @@
             
             <label for="password" class="title_head">Password</label>
             <input type="password" name="pass" id="password" placeholder="password"  required>
-            <a href="/" class="forget">forget Password?</a>
+            
             <button type="submit">Login</button>
             <div class="external">    
                 <a href={{ url_for('register', registerer='professional') }}>Create account:Professional</a>
