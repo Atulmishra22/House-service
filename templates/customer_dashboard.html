@@ -61,9 +61,8 @@
         
             <div class="my-5 row container-fluid align-items-center justify-content-center">
                 
-                    
-                <div href="{{ url_for('particular_service',service_type = 'cleaning',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
-                    <div class="card border-primary">
+                <a href="{{ url_for('particular_service',service_type = 'cleaning',user = customer.name)}}" class="btn col-8 col-lg-4 col-xl-3 m-2">
+                    <div class="card border-primary ">
                         <div class="card-header text-center">
                             Service
                         </div>
@@ -74,9 +73,9 @@
                             
                         </div>
                     </div>
-                </div>
+                </a>  
 
-                <div href="{{ url_for('particular_service',service_type = 'repairing',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <a href="{{ url_for('particular_service',service_type = 'repairing',user = customer.name) }}" class="text-decoration-none col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -88,9 +87,9 @@
                             
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <div href="{{ url_for('particular_service',service_type = 'saloon',user = customer) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <a href="{{ url_for('particular_service',service_type = 'saloon',user = customer.name) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -102,9 +101,9 @@
                             
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <div href="{{ url_for('particular_service',service_type = 'electrician',user = customer.name) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
+                <a href="{{ url_for('particular_service',service_type = 'electrician',user = customer.name) }}" class="col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -116,7 +115,7 @@
                             
                         </div>
                     </div>
-                </div>
+                </a>
                 
             </div>    
         </div> 

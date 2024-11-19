@@ -238,10 +238,10 @@ def show_detail_admin(item, id):
         prof = Professional.query.filter_by(id=id).first()
         return render_template("show_admin_detail.html", prof=prof, item=item)
 
-@app.route('/<user>/particular_service/<service_type>')
+@app.route('/customer_dashboard/<user>/particular_service/<service_type>')
 def particular_service(user, service_type):
-    
-    render_template('particular_service',user= user,service_type=service_type)
+    customer = search_customer_name(user)
+    return render_template('particular_service.html',customer=customer,service_type=service_type)
 
 
 @app.route("/view/<user>/profile/<id>", methods=["GET", "POST"])
