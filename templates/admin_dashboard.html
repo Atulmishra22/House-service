@@ -139,17 +139,17 @@
                         {% else %}
                             {% for ser_req in service_requests %}
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                    <div class="col">
+                                    <div class="col-1">
                                         <a href="{{ url_for('show_detail_admin',item = 'service_request',id = ser_req.id) }}" class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-4 text-center">
                                         <p >{{ ser_req.professional_id }}</p>
                                     </div>
-                                    <div class="col">
-                                        <p >{{ ser_req.date_of_request }}</p>
+                                    <div class="col-4 text-center">
+                                        <p >{{ ser_req.date_of_request.strftime('%Y-%m-%d %H:%M') }}</p>
                                     </div>
-                                    <div class="col">
-                                        <p >{{ ser_req.service_status }}</p>
+                                    <div class="col-3 text-center text-primary fw-bold">
+                                        <p >{{ ser_req.service_status|title }}</p>
                                         
                                     </div>
                                 </div>
@@ -272,7 +272,7 @@
                                         <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Active') }}" class="btn btn-primary">Unblock</a>   
                                         <a href="{{ url_for('update_status_admin', user = 'customer',id = customer.id,status='Delete') }}" class="btn btn-outline-danger">Delete</a>   
                                         {% else %}
-                                        <a href="{{ url_for('update_status_admin',user = 'customer',id = customer.id,status='Blocked' ) }}" class="btn btn-outline-danger">Block</a>
+                                        <a href="{{ url_for('update_status_admin',user = 'customer',id = customer.id,status='Blocked' ) }}" class="btn btn-danger">Block</a>
                                         {% endif %}
                                     </div>
                                 </div>

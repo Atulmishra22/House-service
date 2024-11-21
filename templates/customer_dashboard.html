@@ -82,7 +82,7 @@
                     </div>
                 </a>  
 
-                <a href="{{ url_for('particular_service',service_type = 'repairing',user = customer.name) }}" class="text-decoration-none col-8 col-lg-4 col-xl-3 m-2 btn">
+                <a href="{{ url_for('particular_service',service_type = 'repair',user = customer.name) }}" class="text-decoration-none col-8 col-lg-4 col-xl-3 m-2 btn">
                     <div class="card border-primary">
                         <div class="card-header text-center">
                             Service
@@ -170,8 +170,9 @@
                                     <div class="col-3">
                                         <p >{{ ser_req.professional.phone }}</p>   
                                     </div>
-                                    {% if ser_req.service_status == 'requested' %}
+                                    {% if ser_req.service_status == 'requested' or ser_req.service_status == 'accepted' %}
                                     <div class="col-2">
+                                        <p class="text-info fs-6">{{ ser_req.service_status|title }}</p>
                                         <a href="{{ url_for('request_review',uid = customer.id,rid=ser_req.id) }}" class="btn btn-outline-info">Close it?</a>
                                         <a href="{{ url_for('update_request', user_id=customer.id,request_id = ser_req.id ) }}" class="btn btn-primary">Edit</a>
                                     </div>

@@ -1,92 +1,124 @@
-from .modals import db,Admin , Professional, Customer,Service,ServiceRequest,Review
+from .modals import db, Admin, Professional, Customer, Service, ServiceRequest, Review
 from werkzeug.utils import secure_filename
 
 
 # search service by name
 def search_service_name(name):
-    services = Service.query.filter(Service.name.ilike(f'%{name}%')).all()
+    services = Service.query.filter(Service.name.ilike(f"%{name}%")).all()
     return services
 
 
-#search service by price
+# search service by price
 def search_service_price(price):
-    services = Service.query.filter(Service.price.ilike(f'%{price}%')).all()
+    services = Service.query.filter(Service.price.ilike(f"%{price}%")).all()
     return services
 
-#search service by time
+
+# search service by time
 def search_service_time(time):
-    services = Service.query.filter(Service.time_required.ilike(f'%{time}%')).all()
+    services = Service.query.filter(Service.time_required.ilike(f"%{time}%")).all()
     return services
 
-#search professional by name
+
+# search professional by name
 def search_professional_name(name):
-    professionals = Professional.query.filter(Professional.name.ilike(f'%{name}%')).all()
+    professionals = Professional.query.filter(
+        Professional.name.ilike(f"%{name}%")
+    ).all()
     return professionals
 
-#search professional by status
+
+# search professional by status
 def search_professional_status(status):
-    professionals = Professional.query.filter(Professional.status.ilike(f'%{status}%')).all()
+    professionals = Professional.query.filter(
+        Professional.status.ilike(f"%{status}%")
+    ).all()
     return professionals
 
-#search professional by address
+
+# search professional by address
 def search_professional_address(address):
-    professionals = Professional.query.filter(Professional.address.ilike(f'%{address}%')).all()
+    professionals = Professional.query.filter(
+        Professional.address.ilike(f"%{address}%")
+    ).all()
     return professionals
 
-#search professional by pincode
+
+# search professional by pincode
 def search_professional_pincode(pincode):
-    professionals = Professional.query.filter(Professional.pincode.ilike(f'%{pincode}%')).all()
+    professionals = Professional.query.filter(
+        Professional.pincode.ilike(f"%{pincode}%")
+    ).all()
     return professionals
 
-#search professional by service_type
+
+# search professional by service_type
 def search_professional_service_type(service):
-    professionals = Professional.query.filter(Professional.service_type.ilike(f'%{service}%')).all()
+    professionals = Professional.query.filter(
+        Professional.service_type.ilike(f"%{service}%")
+    ).all()
     return professionals
 
-#search customer by name
+
+# search customer by name
 def search_customer_name(name):
-    customers = Customer.query.filter(Customer.name.ilike(f'%{name}%')).all()
+    customers = Customer.query.filter(Customer.name.ilike(f"%{name}%")).all()
     return customers
 
-#search customer by pincode
+
+# search customer by pincode
 def search_customer_pincode(pincode):
-    customers = Customer.query.filter(Customer.pincode.ilike(f'%{pincode}%')).all()
+    customers = Customer.query.filter(Customer.pincode.ilike(f"%{pincode}%")).all()
     return customers
 
-#search customer by address
+
+# search customer by address
 def search_customer_address(address):
-    customers = Customer.query.filter(Customer.address.ilike(f'%{address}%')).all()
+    customers = Customer.query.filter(Customer.address.ilike(f"%{address}%")).all()
     return customers
 
-#search customer by status
+
+# search customer by status
 def search_customer_status(status):
-    customers = Customer.query.filter(Customer.status.ilike(f'%{status}%')).all()
+    customers = Customer.query.filter(Customer.status.ilike(f"%{status}%")).all()
     return customers
 
-#search customer by contact
+
+# search customer by contact
 def search_customer_contact(contact):
-    customers = Customer.query.filter(Customer.phone.ilike(f'%{contact}%')).all()
+    customers = Customer.query.filter(Customer.phone.ilike(f"%{contact}%")).all()
     return customers
 
-#search service_request by service name
+
+# search service_request by service name
 def search_sr_servicename(name):
-    service_id = Service.query.filter(Service.name.ilike(f'%{name}%')).first()
+    service_id = Service.query.filter(Service.name.ilike(f"%{name}%")).first()
     service_requests = ServiceRequest.query.filter_by(service_id=service_id).all()
     return service_requests
 
+
 def search_sr_professionalname(name):
-    professional_id = Professional.query.filter(Professional.name.ilike(f'%{name}%')).first()
-    service_requests = ServiceRequest.query.filter_by(professional_id=professional_id).all()
+    professional_id = Professional.query.filter(
+        Professional.name.ilike(f"%{name}%")
+    ).first()
+    service_requests = ServiceRequest.query.filter_by(
+        professional_id=professional_id
+    ).all()
     return service_requests
 
+
 def search_sr_customername(name):
-    customer_id = Customer.query.filter(Customer.name.ilike(f'%{name}%')).first()
+    customer_id = Customer.query.filter(Customer.name.ilike(f"%{name}%")).first()
     service_requests = ServiceRequest.query.filter_by(customer_id=customer_id).all()
     return service_requests
 
+
 def search_sr_status(status):
-    service_requests = ServiceRequest.query.filter(ServiceRequest.service_status.ilike(f'%{status}%')).all()
+    service_requests = ServiceRequest.query.filter(
+        ServiceRequest.service_status.ilike(f"%{status}%")
+    ).all()
     return service_requests
+
 
 def data_from_service(param):
     name = search_service_name(param)
@@ -100,7 +132,8 @@ def data_from_service(param):
         return time
     else:
         return []
-    
+
+
 def data_from_professional(param):
     name = search_professional_name(param)
     service = search_professional_service_type(param)
@@ -119,7 +152,8 @@ def data_from_professional(param):
         return status
     else:
         return []
-    
+
+
 def data_from_customer(param):
     name = search_customer_name(param)
     phone = search_customer_contact(param)
@@ -138,7 +172,8 @@ def data_from_customer(param):
         return pin
     else:
         return []
-    
+
+
 def data_from_servicerequest(param):
     pname = search_sr_professionalname(param)
     sname = search_sr_servicename(param)
@@ -154,36 +189,46 @@ def data_from_servicerequest(param):
         return status
     else:
         return []
-    
-def status_changer_user(user,status,id):
-    if user == 'customer':
-        cust = Customer.query.filter_by(id = id).first()
-        if status != 'Delete':
+
+
+def status_changer_user(user, status, id):
+    if user == "customer":
+        cust = Customer.query.filter_by(id=id).first()
+        if status != "Delete":
             cust.status = status
+            if status == "Blocked":
+                ser_req = ServiceRequest.query.filter_by(customer_id=id).all()
+                for ser in ser_req:
+                    if ser.service_status in ["accepted", "requested"]:
+                        ser.service_status = "rejected"
         else:
             db.session.delete(cust)
         db.session.commit()
-        
+
     else:
         prof = Professional.query.filter_by(id=id).first()
-        if status != 'Delete':
+        if status != "Delete":
             prof.status = status
+            if status == "Blocked":
+                ser_req = ServiceRequest.query.filter_by(professional_id=id).all()
+                for ser in ser_req:
+                    ser.service_status = "rejected"
         else:
             db.session.delete(cust)
         db.session.commit()
-        
 
-def file_url(file,name):
+
+def file_url(file, name):
     if file.filename:
         filename = secure_filename(file.filename)
-        path = './professional_verification/'+ name + '_'+ filename
+        path = "./professional_verification/" + name + "_" + filename
         file.save(path)
         return path
-    
 
-#find service by professional service type
+
+# find service by professional service type
 def search_service_profser(service_type):
-    service = Service.query.filter(Service.name.ilike(f'%{service_type}%')).first()
+    service = Service.query.filter(Service.name.ilike(f"%{service_type}%")).first()
     return service
 
 
@@ -196,42 +241,71 @@ def calculate_average_rating(professional):
         return sum(ratings) / len(ratings)
     return 0
 
-def get_professional_ratings(service_type):
-    professionals = Professional.query.filter(Professional.service_type.ilike(f'%{service_type}%')).all()
-    professional_ratings = []
-    for professional in professionals:
-        service = search_service_profser(professional.service_type)
-        average_rating = calculate_average_rating(professional)
-        professional_ratings.append({
-            'professional_id': professional.id,
-            'name': professional.name,
-            'average_rating': average_rating,
-            'service_type': professional.service_type,
-            'phone': professional.phone,
-            'service' : service,
-        })
-    return professional_ratings
-
-
-def filter_top_professionals(service_name,limit=5):
-    professional_ratings = get_professional_ratings(service_name)
-    sorted_professionals = sorted(
-        professional_ratings, key=lambda x: x['average_rating'], reverse=True
-    )
-    return sorted_professionals[:limit]
 
 def search_professional(word):
     professionals = data_from_professional(word)
     professional_ratings = []
     for professional in professionals:
-        service = search_service_profser(professional.service_type)
-        average_rating = calculate_average_rating(professional)
-        professional_ratings.append({
-            'professional': professional,
-            'average_rating': average_rating,
-            'service' : service,
-        })
+        if professional.status not in ["Blocked", "Rejected", "pending"]:
+            service = search_service_profser(professional.service_type)
+            average_rating = calculate_average_rating(professional)
+            professional_ratings.append(
+                {
+                    "professional": professional,
+                    "average_rating": average_rating,
+                    "service": service,
+                }
+            )
     sorted_list = sorted(
-        professional_ratings, key=lambda x: x['average_rating'], reverse=True
+        professional_ratings, key=lambda x: x["average_rating"], reverse=True
     )
-    return sorted_list[:4]
+    return sorted_list[:5]
+
+
+def auto_reject_request(rid):
+    request = ServiceRequest.query.get(rid)
+    pid = request.professional_id
+    rdate = request.date_of_request
+    cdate = request.date_of_completion
+    overlap_request = (
+        db.session.query(ServiceRequest)
+        .filter(
+            ServiceRequest.professional_id == pid,
+            ServiceRequest.id != rid,
+            ServiceRequest.service_status.notin_(["rejected", "completed"]),
+            db.or_(
+                db.and_(
+                    ServiceRequest.date_of_request < cdate,
+                    ServiceRequest.date_of_completion > rdate,
+                )
+            ),
+        )
+        .all()
+    )
+    if overlap_request:
+        for req in overlap_request:
+            req.service_status = "rejected"
+    db.session.commit()
+
+
+def reject_new_request(request):
+    pid = request.professional_id
+    rdate = request.date_of_request
+    cdate = request.date_of_completion
+    overlap_request = (
+        db.session.query(ServiceRequest)
+        .filter(
+            ServiceRequest.professional_id == pid,
+            ServiceRequest.service_status == "accepted",
+            db.or_(
+                db.and_(
+                    ServiceRequest.date_of_request < cdate,
+                    ServiceRequest.date_of_completion > rdate,
+                )
+            ),
+        )
+        .all()
+    )
+    if overlap_request:
+        request.service_status = "rejected"
+    db.session.commit()

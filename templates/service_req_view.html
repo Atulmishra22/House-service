@@ -28,16 +28,25 @@
                                 </tr>
                                 <tr>
                                     <th>Date of Request:</th>
-                                    <td>{{ serreq.date_of_request.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>{{ serreq.date_of_request.strftime('%d-%m-%Y %H:%M') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Date of completion:</th>
-                                    <td>{{ serreq.date_of_completion }}</td>
+                                    <td>{{ serreq.date_of_completion.strftime('%d-%m-%Y %H:%M') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Service Status:</th>
-                                    <td>{{ serreq.service_status }}</td>
+                                    <td>{{ serreq.service_status|title }}</td>
                                 </tr>
+                                {% for review in serreq.reviews %}
+                                    {% if review %}
+                                    <tr>
+                                        <th>Rating:</th>
+                                        <td>{{ review.rating }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                {% endfor %}
                                 <tr>
                                     <th>Remarks:</th>
                                     <td>{{ serreq.remarks }}</td>
@@ -88,8 +97,17 @@
                                 </tr>
                                 <tr>
                                     <th>Service Status:</th>
-                                    <td>{{ serreq.service_status }}</td>
+                                    <td>{{ serreq.service_status|title }}</td>
                                 </tr>
+                                {% for review in serreq.reviews %}
+                                    {% if review %}
+                                    <tr>
+                                        <th>Rating:</th>
+                                        <td>{{ review.rating }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                {% endfor %}
                                 <tr>
                                     <th>Remarks:</th>
                                     <td>{{ serreq.remarks }}</td>

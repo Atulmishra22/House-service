@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-4">
                         <label for="cdate" class="bold h5">Completion Name:</label>
-                        <input type="hidden" id="cdate" class="form-control" name="cdate" value="{{ request.date_of_completion }}"><strong class="text-primary h5 lead">{{ request.date_of_completion }}</strong>
+                        <input type="hidden" id="cdate" class="form-control" name="cdate" value="{{ request.date_of_completion }}"><strong class="text-primary h5 lead">{{ request.date_of_request }}</strong>
                     </div>
                 </div>
                 <div class="row my-3">
@@ -56,8 +56,12 @@
                         <textarea name="comment" id="comment" class="border rounded"></textarea>
                     </div>
                 </div>
-                <div class="row-2 text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="row-2 d-flex justify-content-center">
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ url_for('customerDashboard', user = customer.name) }}" class="btn btn-outline-info">Cancel</a>
+                    </div>
+                    
                 </div>
 
             </form>

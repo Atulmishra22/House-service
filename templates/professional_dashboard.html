@@ -100,7 +100,7 @@
                                             <p >{{ req.customer.address }} {{ req.customer.pincode }} </p>
                                         </div>
                                         <div class="col-4 text-center">
-                                            <p>{{ req.service_status }}</p>
+                                            <p>{{ req.service_status|title }}</p>
                                         </div>
                                     </div>
                                     {% endif %}
@@ -147,13 +147,13 @@
                                 
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
                                     <div class="col-1">
-                                        <a href="{{ url_for('service_request_detail',user = 'professional',uid=professional.id,rid=req.id) }}" >{{ req.id }}</a>
+                                        <a href="{{ url_for('service_request_detail',user = 'professional',uid=professional.id,rid=req.id) }}" class="btn btn-outline-info">{{ req.id }}</a>
                                     </div>
                                     <div class="col-2 text-center">
-                                        <p >{{ req.customer_id.name }}</p>
+                                        <p >{{ req.customer.name }}</p>
                                     </div>
                                     <div class="col-2 text-center">
-                                        <p >{{ req.customer_id.phone }}</p>
+                                        <p >{{ req.customer.phone }}</p>
                                     </div>
                                     <div class="col-3 text-center">
                                         <p > {{ req.customer.address }} {{ req.customer.pincode }}</p>
@@ -161,9 +161,12 @@
                                     <div class="col-2 text-center">
                                         <p > {{ req.date_of_completion.strftime('%Y-%m-%d %H:%M') }} </p>
                                     </div>
+                                    {% for review in req.reviews %}
                                     <div class="col-2 text-center">
-                                        <p > {{ req.reviews.rating }} </p>
+                                        <p > {{ review.rating }}/5 </p>
                                     </div>
+                                    {% endfor %}
+                                    
                                 </div>
                                 {% endif %}
                             {% endfor %}
@@ -225,7 +228,7 @@
                                     <a href="{{ url_for('service_request_status', status = 'accept',request_id = req.id,user=professional.name) }}" class="btn btn-secondary">Accept</a>
                                     <a href="{{ url_for('service_request_status', status = 'reject',request_id = req.id,user=professional.name) }}" class="btn btn-outline-danger">Reject</a>
                                     {% else %}
-                                        <p>{{ req.service_status}}</p>
+                                        <p>{{ req.service_status|title}}</p>
                                     {% endif %}
                                     
                                 </div>

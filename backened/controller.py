@@ -9,7 +9,7 @@ from flask import (
 from .modals import *
 from .useful_function import *
 from flask import current_app as app
-
+from datetime import datetime
 
 @app.route("/")
 def home():
@@ -285,11 +285,16 @@ def del_mod_service(task, id):
         return redirect(url_for("adminDashboard"))
     else:
         ser = Service.query.get_or_404(id)
+        sername = ser.name
         if request.method == "POST":
             ser.name = request.form["sname"]
             ser.price = request.form["price"]
             ser.time_required = request.form["t_required"]
             ser.description = request.form["sdesc"]
+            profs = search_professional_service_type(sername)
+            if profs:
+                for prof in profs:
+                    prof.service_type = ser.name
             db.session.commit()
             return redirect(url_for("adminDashboard"))
 
@@ -311,7 +316,8 @@ def show_detail_admin(item, id):
 
     else:
         prof = Professional.query.filter_by(id=id).first()
-        return render_template("show_admin_detail.html", prof=prof, item=item)
+        rating = calculate_average_rating(prof)
+        return render_template("show_admin_detail.html", prof=prof, item=item,rating =rating)
 
 
 @app.route("/professional_view/<filename>")
@@ -323,7 +329,7 @@ def professional_file(filename):
 def particular_service(user, service_type):
     customer = Customer.query.filter_by(name=user).first()
     service_request = ServiceRequest.query.filter_by(customer_id = customer.id).all()
-    professionals = filter_top_professionals(service_type)
+    professionals = search_professional(service_type)
     return render_template(
         "particular_service.html",
         customer=customer,
@@ -354,6 +360,7 @@ def book_service(user):
         )
         db.session.add(service_request)
         db.session.commit()
+        check_overlap = reject_new_request(service_request)
         return redirect(url_for("customerDashboard", user=user))
     service_id = request.args.get("service_id")
     professional_id = request.args.get("professional_id")
@@ -407,7 +414,8 @@ def service_request_status(user,status,request_id):
     service_req = ServiceRequest.query.filter_by(id = request_id).first()
     
     if status == 'accept':
-        service_req.service_status = 'accepted' 
+        service_req.service_status = 'accepted'
+        overlap_service = auto_reject_request(service_req.id) 
     elif status == 'reject':
         service_req.service_status = 'rejected'
     db.session.commit()
@@ -432,10 +440,11 @@ def update_request(user_id,request_id):
     if request.method == "POST":
         date_of_request = request.form['rdate']
         srequest.date_of_request = datetime.strptime(date_of_request, "%Y-%m-%dT%H:%M")
-        time_of_completion = request.form['cdate']
-        srequest.time_of_completion = datetime.strptime(time_of_completion, "%Y-%m-%dT%H:%M")
+        date_of_completion = request.form['cdate']
+        srequest.date_of_completion = datetime.strptime(date_of_completion, "%Y-%m-%dT%H:%M")
         srequest.remarks = request.form['remark']
         db.session.commit()
+        check_overlap = reject_new_request(srequest)
         return redirect(url_for('customerDashboard', user = customer.name))
     return render_template('edit_ser_request.html', ser_req = srequest,customer=customer)
 
@@ -462,6 +471,7 @@ def request_review(uid,rid):
         new_review = Review(customer_id = customer_id, service_request_id = request_id, rating = rating,comment = comment)
         db.session.add(new_review)
         ser_req.service_status = 'closed'
+        ser_req.date_of_completion = datetime.now()
         db.session.commit()
         
         return redirect(url_for('customerDashboard', user = customer.name))
