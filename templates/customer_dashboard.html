@@ -40,6 +40,13 @@
             </div>   
     </div>    
 </nav>
+{% if customer.status == 'Blocked' %}
+
+    <div class="container text-center h3 lead m-4">You have been Blocked</div>
+
+{% else %}
+    
+
 {% block search_customer %}
     
 
@@ -143,16 +150,16 @@
                   </h2>
                   <div id="service-request-collapse" class="accordion-collapse collapse show" data-bs-parent="#Service-request">
                     <div class="accordion-body">
-                        {% if service_requests | length == 0 %}
+                        {% if not ser_reqs %}
                             <div class="col">
                                 <p class="lead">No Service Request found</p>
                             </div>
                             
                         {% else %}
-                            {% for ser_req in service_requests %}
+                            {% for ser_req in ser_reqs %}
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
                                     <div class="col-1">
-                                        <a class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
+                                        <a href="{{ url_for('service_request_detail',user = 'customer',uid=customer.id,rid=ser_req.id) }}" class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
                                     </div>
                                     <div class="col-3">
                                         <p >{{ ser_req.service.name }}</p>
@@ -163,9 +170,21 @@
                                     <div class="col-3">
                                         <p >{{ ser_req.professional.phone }}</p>   
                                     </div>
+                                    {% if ser_req.service_status == 'requested' %}
                                     <div class="col-2">
-                                        <p >{{ ser_req.professional.service_status }}</p>   
+                                        <a href="{{ url_for('request_review',uid = customer.id,rid=ser_req.id) }}" class="btn btn-outline-info">Close it?</a>
+                                        <a href="{{ url_for('update_request', user_id=customer.id,request_id = ser_req.id ) }}" class="btn btn-primary">Edit</a>
                                     </div>
+                                    {% elif ser_req.service_status == 'rejected' %}  
+                                    <div class="col-2">
+                                        <p class="text-danger fs-6">{{ ser_req.service_status|title }}</p>
+                                        <a href="{{ url_for('delete_request',rid = ser_req.id,uname=customer.name) }}" class="btn btn-danger">Delete</a>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-2">
+                                        <p >{{ ser_req.service_status|title }}</p>   
+                                    </div>
+                                    {% endif %}
                                 </div>
                             {% endfor %} 
                         {% endif %}       
@@ -177,4 +196,5 @@
           
     </div>
 {% endblock search_customer %}
+{% endif %}
 {% endblock content %}

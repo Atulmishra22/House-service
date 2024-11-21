@@ -180,3 +180,58 @@ def file_url(file,name):
         file.save(path)
         return path
     
+
+#find service by professional service type
+def search_service_profser(service_type):
+    service = Service.query.filter(Service.name.ilike(f'%{service_type}%')).first()
+    return service
+
+
+def calculate_average_rating(professional):
+    ratings = []
+    for service_request in professional.service_requests:
+        for review in service_request.reviews:
+            ratings.append(review.rating)
+    if ratings:
+        return sum(ratings) / len(ratings)
+    return 0
+
+def get_professional_ratings(service_type):
+    professionals = Professional.query.filter(Professional.service_type.ilike(f'%{service_type}%')).all()
+    professional_ratings = []
+    for professional in professionals:
+        service = search_service_profser(professional.service_type)
+        average_rating = calculate_average_rating(professional)
+        professional_ratings.append({
+            'professional_id': professional.id,
+            'name': professional.name,
+            'average_rating': average_rating,
+            'service_type': professional.service_type,
+            'phone': professional.phone,
+            'service' : service,
+        })
+    return professional_ratings
+
+
+def filter_top_professionals(service_name,limit=5):
+    professional_ratings = get_professional_ratings(service_name)
+    sorted_professionals = sorted(
+        professional_ratings, key=lambda x: x['average_rating'], reverse=True
+    )
+    return sorted_professionals[:limit]
+
+def search_professional(word):
+    professionals = data_from_professional(word)
+    professional_ratings = []
+    for professional in professionals:
+        service = search_service_profser(professional.service_type)
+        average_rating = calculate_average_rating(professional)
+        professional_ratings.append({
+            'professional': professional,
+            'average_rating': average_rating,
+            'service' : service,
+        })
+    sorted_list = sorted(
+        professional_ratings, key=lambda x: x['average_rating'], reverse=True
+    )
+    return sorted_list[:4]

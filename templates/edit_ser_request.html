@@ -1,0 +1,41 @@
+{% extends 'customer_dashboard.html' %}
+{% block search_customer %}
+<div class="container border border-primary m-5 rounded">
+    <div class="justify-content-center">
+        <p class="h4 text-info text-center m-2">
+            Update Request
+        </p>
+    </div>
+    <div class="row m-2">
+        <form action="{{ url_for('update_request',user_id = customer.id,request_id = ser_req.id)}}" method="post">
+            <div class="mb-3">
+                <label for="sid" class="form-label">Service ID:</label>
+                <input   class="form-control" name="sid" id="sid" value='{{ ser_req.service_id }}' disabled> 
+            </div>
+            <div class="mb-3">
+                <label for="pid" class="form-label">Professional ID:</label>
+                <input  class="form-control" name="pid" id="pid" value='{{ser_req.professional_id }}' disabled> 
+            </div>
+            <div class="mb-3">
+                <label for="custid" class="form-label">Customer ID :</label>
+                <input  class="form-control" name="custid" id="custid" value='{{ser_req.customer_id }}' disabled> 
+            </div>
+            <div class="mb-3">
+                <label for="rdate" class="form-label">Request Date :</label>
+                <input type="datetime-local" class="form-control" name="rdate" id="rdate" value="{{ser_req.date_of_request }}" >
+            </div>
+            <div class="mb-3">
+                <label for="cdate" class="form-label">Completion Date :</label>
+                <input type="datetime-local" class="form-control" name="cdate" id="cdate" value="{{ ser_req.date_of_completion }}" required >
+            </div>
+            <div class="mb-3">
+                <label for="remark" class="form-label">Remark :</label>
+                <textarea class="form-control" id="remark" name="remark"  rows="3" >{{ ser_req.remarks }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Request</button>
+            <a href="{{ url_for("customerDashboard", user = customer.name) }}" class="btn btn-outline-primary"> Cancel</a>
+        </form>
+    </div>
+</div>
+    
+{% endblock search_customer %}

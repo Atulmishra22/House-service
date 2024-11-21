@@ -1,7 +1,15 @@
-from flask import Flask, render_template, url_for, request, redirect, send_from_directory
+from flask import (
+    Flask,
+    render_template,
+    url_for,
+    request,
+    redirect,
+    send_from_directory,
+)
 from .modals import *
 from .useful_function import *
 from flask import current_app as app
+
 
 @app.route("/")
 def home():
@@ -66,7 +74,7 @@ def register(registerer):
                     file_path=path,
                     address=address,
                     pincode=pin,
-                    description=des
+                    description=des,
                 )
                 db.session.add(user)
                 db.session.commit()
@@ -202,7 +210,15 @@ def customer_search(user):  # user take name input of customer as user
                 user=user,
             )
         )
-    # writing logic for search functionality
+    if search_query:
+        professionals = search_professional(search_query)
+        return render_template(
+            "customer_search.html",
+            customer=customer,
+            search_by=search_by,
+            search_query=search_query,
+            professionals=professionals,
+        )
 
     return render_template(
         "customer_search.html",
@@ -297,15 +313,57 @@ def show_detail_admin(item, id):
         prof = Professional.query.filter_by(id=id).first()
         return render_template("show_admin_detail.html", prof=prof, item=item)
 
-@app.route('/professional_view/<filename>')
+
+@app.route("/professional_view/<filename>")
 def professional_file(filename):
-    return send_from_directory('professional_verification', filename)
+    return send_from_directory("professional_verification", filename)
+
 
 @app.route("/customer_dashboard/<user>/particular_service/<service_type>")
 def particular_service(user, service_type):
-    customer = search_customer_name(user)
+    customer = Customer.query.filter_by(name=user).first()
+    service_request = ServiceRequest.query.filter_by(customer_id = customer.id).all()
+    professionals = filter_top_professionals(service_type)
     return render_template(
-        "particular_service.html", customer=customer, service_type=service_type
+        "particular_service.html",
+        customer=customer,
+        service_type=service_type,
+        professionals=professionals,
+        ser_reqs=service_request
+    )
+
+
+@app.route("/customer_dashboard/<user>/book_service", methods=["GET", "POST"])
+def book_service(user):
+    customer = Customer.query.filter_by(name=user).first()
+    if request.method == "POST":
+        service_id = request.form["sid"]
+        professional_id = request.form["pid"]
+        customer_id = request.form["custid"]
+        date_of_request = request.form["rdate"]
+        date_of_completion = request.form["cdate"]
+        remark = request.form["remark"]
+
+        service_request = ServiceRequest(
+            service_id=service_id,
+            professional_id=professional_id,
+            customer_id=customer_id,
+            date_of_request=datetime.strptime(date_of_request, "%Y-%m-%dT%H:%M"),
+            date_of_completion=datetime.strptime(date_of_completion, "%Y-%m-%dT%H:%M"),
+            remarks=remark,
+        )
+        db.session.add(service_request)
+        db.session.commit()
+        return redirect(url_for("customerDashboard", user=user))
+    service_id = request.args.get("service_id")
+    professional_id = request.args.get("professional_id")
+    customer_id = request.args.get("customer_id")
+    return render_template(
+        "book_service.html",
+        customer=customer,
+        customer_id=customer_id,
+        professional_id=professional_id,
+        service_id=service_id,
     )
 
 
@@ -344,6 +402,16 @@ def update_status_admin(user, id, status):
     update = status_changer_user(user=user, id=id, status=status)
     return redirect(url_for("adminDashboard"))
 
+@app.route('/professional_dashboard/<user>/service/<request_id>/<status>')
+def service_request_status(user,status,request_id):
+    service_req = ServiceRequest.query.filter_by(id = request_id).first()
+    
+    if status == 'accept':
+        service_req.service_status = 'accepted' 
+    elif status == 'reject':
+        service_req.service_status = 'rejected'
+    db.session.commit()
+    return redirect(url_for('professionalDashboard', id = service_req.professional_id))
 
 @app.route("/summary/<user>/<id>")
 def summary(user, id):
@@ -356,3 +424,53 @@ def summary(user, id):
     else:
 
         return render_template("summary_all.html", user=user)
+
+@app.route('/customer_dashboard/edit_request/<user_id>/<request_id>', methods=['GET', 'POST'])
+def update_request(user_id,request_id):
+    srequest = ServiceRequest.query.filter_by(id = request_id).first()
+    customer  = Customer.query.filter_by(id = user_id).first()
+    if request.method == "POST":
+        date_of_request = request.form['rdate']
+        srequest.date_of_request = datetime.strptime(date_of_request, "%Y-%m-%dT%H:%M")
+        time_of_completion = request.form['cdate']
+        srequest.time_of_completion = datetime.strptime(time_of_completion, "%Y-%m-%dT%H:%M")
+        srequest.remarks = request.form['remark']
+        db.session.commit()
+        return redirect(url_for('customerDashboard', user = customer.name))
+    return render_template('edit_ser_request.html', ser_req = srequest,customer=customer)
+
+@app.route('/service_request_detail/<user>/<uid>/<rid>')
+def service_request_detail(user,uid,rid):
+    if user == "customer":
+        customer = Customer.query.filter_by(id=uid).first()
+        ser_req = ServiceRequest.query.filter_by(id = rid).first()
+        return render_template('service_req_view.html', serreq = ser_req, customer = customer,user = user)
+    else:
+        professional = Professional.query.filter_by(id=uid).first()
+        ser_req = ServiceRequest.query.filter_by(id = rid).first()
+        return render_template('service_req_view.html', serreq = ser_req, professional = professional,user = user)
+
+@app.route('/customer_dashboard/<uid>/<rid>',methods=['GET','POST'] )
+def request_review(uid,rid):
+    customer = Customer.query.filter_by(id = uid).first()
+    ser_req = ServiceRequest.query.filter_by(id = rid).first()
+    if request.method == "POST":
+        customer_id = customer.id
+        request_id = request.form['rid']
+        rating = request.form['rating']
+        comment = request.form['comment']
+        new_review = Review(customer_id = customer_id, service_request_id = request_id, rating = rating,comment = comment)
+        db.session.add(new_review)
+        ser_req.service_status = 'closed'
+        db.session.commit()
+        
+        return redirect(url_for('customerDashboard', user = customer.name))
+    return render_template('review.html', request = ser_req, customer = customer)
+    
+@app.route('/customer_dashboard/<uname>/delete/<rid>')
+def delete_request(uname,rid):
+    customer = Customer.query.filter_by(name = uname).first()
+    ser_req = ServiceRequest.query.filter_by(id = rid).first()
+    db.session.delete(ser_req)
+    db.session.commit()
+    return redirect(url_for('customerDashboard', user = customer.name))

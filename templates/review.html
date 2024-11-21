@@ -1,0 +1,66 @@
+{% extends 'customer_dashboard.html' %} <!-- import customer for customer.name -->
+{% block search_customer %}
+    <div class="container-fluid my-2 border border-dark">
+        <div class="bg-light">
+            <h3 class="text-center"> Service Remarks</h3>
+        </div>
+        <div class="conatiner">
+            <form action="" method="post">
+                <div class="row">
+                    <div class=" col d-flex justify-content-center">
+                        <label for="rid" class="h5 lead">Request ID:</label>
+                        <input type="hidden" name="rid" id="rid" class="form-control" value="{{ request.id }}" ><strong class="text-primary h5"> {{ request.id }}</strong>
+                    </div> 
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <label for="sname" class="bold h5">Service Name:</label>
+                        <input type="hidden" id="sname" class="form-control" name="sname" value="{{ request.service.name }}"><strong class="text-primary h5 lead"> {{ request.service.name }}</strong>
+                    </div>
+                    <div class="col-4">
+                        <label for="remark" class="bold h5">Description:</label>
+                        <input type="hidden" id="remark" class="form-control" name="remark" value="{{ request.remarks }}"><strong class="text-primary h5 lead">{{ request.remarks }}</strong>
+                    </div>
+                    <div class="col-4">
+                        <label for="cdate" class="bold h5">Completion Name:</label>
+                        <input type="hidden" id="cdate" class="form-control" name="cdate" value="{{ request.date_of_completion }}"><strong class="text-primary h5 lead">{{ request.date_of_completion }}</strong>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-4">
+                        <label for="pid" class="bold h5">Professional ID:</label>
+                        <input type="hidden" id="pid" class="form-control" name="pid" value="{{ request.professional_id }}"><strong class="text-primary h5 lead">{{ request.professional_id }}</strong>
+                    </div>
+                    <div class="col-4">
+                        <label for="pname" class="bold h5">Professional Name:</label>
+                        <input type="hidden" id="pname" class="form-control" name="pname" value="{{ request.professional.name }}"><strong class="text-primary h5 lead">{{ request.professional.name }}</strong>
+                    </div>
+                    <div class="col-4">
+                        <label for="pphone" class="bold h5">Contact:</label>
+                        <input type="hidden" id="pphone" class="form-control" name="pphone" value="{{ request.professional.phone }}"><strong class="text-primary h5 lead">{{ request.professional.phone }}</strong>
+                    </div>
+                <div class="row my-3 d-flex justify-content-center">
+                    <div class="col-2">
+                        <label for="rating" class="bold h5">Rating ( 1 to 5):</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" id="rating" class="form-control" name="rating" min="1" max="5" required>
+                    </div>
+                </div>
+                <div class="row my-3 d-flex justify-content-center">
+                    <div class="col-1">
+                        <label for="comment" class="bold h5">Comments:</label>
+                    </div>
+                    <div class="col-3 ms-3">
+                        <textarea name="comment" id="comment" class="border rounded"></textarea>
+                    </div>
+                </div>
+                <div class="row-2 text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock search_customer %}

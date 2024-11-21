@@ -39,6 +39,12 @@
             </div>   
     </div>    
 </nav>
+{% if professional.status != 'Approved' %}
+
+    <div class="container text-center h3 lead m-4">You have been Blocked or Rejected by Admin</div>
+
+{% else %}
+
 {% block professional %}
 
 <div class="container">
@@ -61,41 +67,45 @@
                     <button class="accordion-button" type="button"  data-bs-target="#today-service-collapse" aria-expanded="true" >
                       <div class="container row">
                         <h4 class="col-1">ID</h4>
-                        <h4 class="col-2">Customer name</h4>
-                        <h4 class="col-2">Phone</h4>
-                        <h4 class="col-3">Location</h4>
-                        <h4 class="col-4">Action</h4>
+                        <h4 class="col-2 text-center">Customer name</h4>
+                        <h4 class="col-2 text-center">Phone</h4>
+                        <h4 class="col-3 text-center">Location</h4>
+                        <h4 class="col-4 text-center">Action</h4>
                       </div>
                     </button>
                   </h2>
                   <div id="today-service-collapse" class="accordion-collapse  show" data-bs-parent="#today-Services">
                     <div class="accordion-body">
-                        {% if services | length == 0 %}
+                        {% if not ser_req  %}
                         <div class="col">
                             <p class="lead">No Service request found</p>
                         </div>
                             
                         {% else %}
-                            {% for req in ser_req %}
-                                <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                    <div class="col-1">
-                                        <p  class="fw-bold btn btn-outline-info">{{req.id}}</p>
+                                {% for req in ser_req %}
+                                {% if req.service_status == 'accepted' %}
+                                    
+                                
+                                    <div class="conatiner row border border-primary p-1 lead rounded mb-1">
+                                        <div class="col-1">
+                                            <a href="{{ url_for('service_request_detail',user = 'professional',uid=professional.id,rid=req.id) }}" class="fw-bold btn btn-outline-info">{{req.id}}</a>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <p >{{ req.customer.name }}</p>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <p >{{ req.customer.phone }}</p>
+                                        </div>
+                                        <div class="col-3 text-center">
+                                            <p >{{ req.customer.address }} {{ req.customer.pincode }} </p>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <p>{{ req.service_status }}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-2">
-                                        <p >{{ req.customer.name }}</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p >{{ req.customer.name }}</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <p > {{ req.customer.location }}{{ ser_req.customer.pincode }}</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#" class="btn btn-outline-secondary">Accept</a>
-                                        <a href="#" class="btn btn-outline-danger">Reject</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            
                         {% endif %}    
                     </div>
                   </div>
@@ -125,16 +135,19 @@
                     </h2>
                     <div id="closed-service-collapse" class="accordion-collapse  show" data-bs-parent="#closed-Services">
                     <div class="accordion-body">
-                        {% if ser_req | length == 0 %}
+                        {% if not ser_req  %}
                         <div class="col">
                             <p class="lead">No Service request found</p>
                         </div>
                             
                         {% else %}
+                            
                             {% for req in ser_req %}
+                            {% if req.service_status == 'closed' %}
+                                
                                 <div class="conatiner row border border-primary p-1 lead rounded mb-1">
                                     <div class="col-1">
-                                        <p>{{ req.id }}</p>
+                                        <a href="{{ url_for('service_request_detail',user = 'professional',uid=professional.id,rid=req.id) }}" >{{ req.id }}</a>
                                     </div>
                                     <div class="col-2 text-center">
                                         <p >{{ req.customer_id.name }}</p>
@@ -149,10 +162,12 @@
                                         <p > {{ req.date_of_completion.strftime('%Y-%m-%d %H:%M') }} </p>
                                     </div>
                                     <div class="col-2 text-center">
-                                        <p > {{ req.review.rating }} </p>
+                                        <p > {{ req.reviews.rating }} </p>
                                     </div>
                                 </div>
+                                {% endif %}
                             {% endfor %}
+                            
                         {% endif %}    
                     </div>
                     </div>
@@ -175,37 +190,46 @@
                     <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#all-service-collapse" aria-expanded="true" aria-controls="all-service-collapse">
                         <div class="container row">
-                        <h4 class="col">ID</h4>
-                        <h4 class="col">Service name</h4>
-                        <h4 class="col">Base price</h4>
-                        <h4 class="col">Action</h4>
+                            <h4 class="col-1">ID</h4>
+                            <h4 class="col-2 text-center">Customer name</h4>
+                            <h4 class="col-2 text-center">Phone</h4>
+                            <h4 class="col-3 text-center">Location</h4>
+                            <h4 class="col-4 text-center">Action</h4>
                         </div>
                     </button>
                     </h2>
                     <div id="all-service-collapse" class="accordion-collapse collapse show" data-bs-parent="#all-Services">
                     <div class="accordion-body">
-                        {% if services | length == 0 %}
+                        {% if ser_req | length == 0 %}
                         <div class="col">
                             <p class="lead">No Service found</p>
                         </div>
                             
                         {% else %}
-                            {% for service in services %}
-                                <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                    <div class="col">
-                                        <a href="{{ url_for('showDetailAdmin',id=service.id,item = 'service') }}" class="fw-bold btn btn-outline-info">{{service.id}}</a>
-                                    </div>
-                                    <div class="col">
-                                        <p >{{ service.name }}</p>
-                                    </div>
-                                    <div class="col">
-                                        <p > {{ service.price }}</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-outline-secondary">Modify</a>
-                                        <a href="{{ url_for('deleteService',id=service.id) }}" class="btn btn-outline-danger">Delete</a>
-                                    </div>
+                            {% for req in ser_req %}
+                            <div class="conatiner row border border-primary p-1 lead rounded mb-1">
+                                <div class="col-1">
+                                    <a href="{{ url_for('service_request_detail',user = 'professional',uid=professional.id,rid=req.id) }}"  class="fw-bold btn btn-outline-info">{{req.id}}</a>
                                 </div>
+                                <div class="col-2 text-center">
+                                    <p >{{ req.customer.name }}</p>
+                                </div>
+                                <div class="col-2 text-center">
+                                    <p >{{ req.customer.phone }}</p>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <p >{{ req.customer.address }} {{ req.customer.pincode }} </p>
+                                </div>
+                                <div class="col-4 text-center">
+                                    {% if req.service_status == 'requested' %}
+                                    <a href="{{ url_for('service_request_status', status = 'accept',request_id = req.id,user=professional.name) }}" class="btn btn-secondary">Accept</a>
+                                    <a href="{{ url_for('service_request_status', status = 'reject',request_id = req.id,user=professional.name) }}" class="btn btn-outline-danger">Reject</a>
+                                    {% else %}
+                                        <p>{{ req.service_status}}</p>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
                             {% endfor %}
                         {% endif %}    
                     </div>
@@ -216,4 +240,5 @@
         </div>
     </section>
 {% endblock professional %}
+{% endif %}
 {% endblock content %}

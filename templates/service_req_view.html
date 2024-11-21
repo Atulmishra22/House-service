@@ -1,0 +1,104 @@
+{% if user == 'customer' %}
+    {% extends 'customer_dashboard.html' %}
+    <!-- import customer for customer name in customer dashboard -->
+        {% block search_customer %}
+            <div class="my-5 row container-fluid align-items-center justify-content-center">
+                <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                    <div class="card border-primary">
+                        <div class="card-header text-center">
+                            Service Request Detail
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table border border-primary">
+                                <tr>
+                                    <th>Request ID:</th>
+                                    <td>{{ serreq.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th> Service ID:</th>
+                                    <td>{{ serreq.service_id}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer ID:</th>
+                                    <td>{{ serreq.customer_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Professional ID:</th>
+                                    <td>{{ serreq.professional_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Request:</th>
+                                    <td>{{ serreq.date_of_request.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of completion:</th>
+                                    <td>{{ serreq.date_of_completion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Service Status:</th>
+                                    <td>{{ serreq.service_status }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Remarks:</th>
+                                    <td>{{ serreq.remarks }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock search_customer %}   
+
+{% else %} 
+
+    {% extends 'professional_dashboard.html' %}
+        {% block professional %} <!-- import professional -->
+            
+            <div class="my-5 row container-fluid align-items-center justify-content-center">
+                <div class="col-8 col-lg-4 col-xl-4 my-4 ">
+                    <div class="card border-primary">
+                        <div class="card-header text-center">
+                            Service Request Detail
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table border border-primary">
+                                <tr>
+                                    <th>Request ID:</th>
+                                    <td>{{ serreq.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th> Service ID:</th>
+                                    <td>{{ serreq.service_id}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer ID:</th>
+                                    <td>{{ serreq.customer_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Professional ID:</th>
+                                    <td>{{ serreq.professional_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Request:</th>
+                                    <td>{{ serreq.date_of_request.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of completion:</th>
+                                    <td>{{ serreq.date_of_completion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Service Status:</th>
+                                    <td>{{ serreq.service_status }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Remarks:</th>
+                                    <td>{{ serreq.remarks }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock professional %}
+
+{% endif %}

@@ -19,7 +19,6 @@
             class="border border-primary rounded ms-3 p-2 h5"
           >
           <option value="service">Service Name</option>
-            <option value="service-request">Service Request</option>
             <option value="pincode">Pin Code </option>
             <option value="location">Location</option>
           </select>
@@ -46,51 +45,59 @@
     <div class="conatiner">
         <h4 class="text-center">{{ search_query }}</h4>
     </div>
-    {% for service in services %}
+    {% if professionals %}
+      
+    
         
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-lg-3 col-xl-3">
-                <div class="card border border-2 border-dark p-3 m-3">
+    <div class="container-fluid">
+
+        <div class="row d-flex justify-content-center">
+          {% for prof in professionals %}
+            <div class="col-3">
+                <div class="card border border-2 border-dark m-3">
                     <div class="card-header text-center">
-                        {{ service.name }}
+                        {{ prof.professional.service_type }}
                     </div>
                     <div class="card-body text-center">
                         <table class="table border border-primary">
                             <tr>
-                                <th>Service ID:</th>
-                                <td>{{ ser.id }}</td>
+                                <th>Professional Name:</th>
+                                <td>{{ prof.professional.name }}</td>
                             </tr>
                             <tr>
-                                <th> Name:</th>
-                                <td>{{ ser.name }}</td>
+                                <th> Location:</th>
+                                <td>{{ prof.professional.address }} {{ prof.professional.pincode }}</td>
                             </tr>
                             <tr>
                                 <th>Price:</th>
-                                <td>Rs.  {{ ser.price }}</td>
+                                <td>Rs.  {{ prof.service.price }}</td>
                             </tr>
                             <tr>
                                 <th>Time Required:</th>
-                                <td>{{ ser.time_required }}</td>
+                                <td>{{ prof.service.time_required }}</td>
                             </tr>
                             <tr>
                                 <th>Description:</th>
-                                <td>{{ ser.description }}</td>
+                                <td>{{ prof.service.description }}</td>
                             </tr>
                             <tr>
                                 <th>Rating:</th>
-                                <td>{{ ser.review.rating }}</td>
+                                <td>{{ prof.average_rating }}</td>
                             </tr>
                             <tr>
-                                <td><a href="" class="btn btn-warning">Book</a></th>
+                                <td><a href="{{ url_for('book_service', user = customer.name,service_id=prof.service.id,professional_id=prof.professional.id,customer_id=customer.id) }}" class="btn btn-warning">Book</a></th>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
+    
+    {% else %}
+      <div class="conatiner text-center">No Service Found</div>
+    {% endif %}
 </div>   
     
 {% endblock search_customer %}
