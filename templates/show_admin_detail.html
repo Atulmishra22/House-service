@@ -106,16 +106,25 @@
                             </tr>
                             <tr>
                                 <th>Date of Request:</th>
-                                <td>{{ serreq.date_of_request.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ serreq.date_of_request.strftime('%d-%m-%Y %H:%M') }}</td>
                             </tr>
                             <tr>
                                 <th>Date of completion:</th>
-                                <td>{{ serreq.date_of_completion.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ serreq.date_of_completion.strftime('%d-%m-%Y %H:%M') }}</td>
                             </tr>
                             <tr>
                                 <th>Service Status:</th>
                                 <td>{{ serreq.service_status }}</td>
                             </tr>
+                            {% for review in serreq.reviews %}
+                            {% if review %}
+                            <tr>
+                                <th>Rating:</th>
+                                <td>{{ rating|int }}/5</td>
+                            </tr>
+                            {% endif %}
+                                
+                            {% endfor %}
                             <tr>
                                 <th>Remarks:</th>
                                 <td>{{ serreq.remarks }}</td>
@@ -152,7 +161,7 @@
                             </tr>
                             <tr>
                                 <th>Date Created:</th>
-                                <td>{{ prof.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ prof.date_created.strftime('%d-%m-%Y %H:%M') }}</td>
                             </tr>
                             <tr>
                                 <th>Service:</th>
