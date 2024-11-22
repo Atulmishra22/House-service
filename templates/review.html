@@ -40,6 +40,7 @@
                         <label for="pphone" class="bold h5">Contact:</label>
                         <input type="hidden" id="pphone" class="form-control" name="pphone" value="{{ request.professional.phone }}"><strong class="text-primary h5 lead">{{ request.professional.phone }}</strong>
                     </div>
+                </div>
                 <div class="row my-3 d-flex justify-content-center">
                     <div class="col-2">
                         <label for="rating" class="bold h5">Rating ( 1 to 5):</label>
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 <div class="row-2 d-flex justify-content-center">
-                    <div class="col-2">
+                    <div class="col-2 mb-2">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{{ url_for('customerDashboard', user = customer.name) }}" class="btn btn-outline-info">Cancel</a>
                     </div>

@@ -23,11 +23,10 @@ def login(msg):
         user = request.form.get("user")
         usrname = request.form.get("usr_name")
         pwd = request.form.get("pass")
-        if (
-            user == "Admin"
-            and Admin.query.filter_by(email=usrname, password=pwd).first()
-        ):
-            return redirect(url_for("adminDashboard"))
+        if user == "Admin" :
+            admin = Admin.query.filter_by(email=usrname, password=pwd).first()
+            if admin:
+                return redirect(url_for("adminDashboard"))
         elif user == "Professional":
             prof = Professional.query.filter_by(email=usrname, password=pwd).first()
             if prof:
@@ -40,8 +39,8 @@ def login(msg):
                 return redirect(url_for("customerDashboard", user=cust.name))
             else:
                 return render_template("login.html", msg="wrong credentials")
-        else:
-            return render_template("login.html", msg="wrong credentials")
+        
+        return render_template("login.html", msg="wrong credentials")
     return render_template("login.html", msg=msg)
 
 
@@ -232,6 +231,7 @@ def customer_search(user):  # user take name input of customer as user
 def professional_search(user):  # user take name input of professional as user
     search_query = request.args.get("search_query") or ""
     search_by = request.args.get("search_by") or ""
+    professional = Professional.query.filter_by(name=user).first()
     if request.method == "POST":
         search_query = request.form.get("searched")
         search_by = request.form.get("search_by")
@@ -243,9 +243,15 @@ def professional_search(user):  # user take name input of professional as user
                 user=user,
             )
         )
-    # writing logic for search functionality
-
-    professional = Professional.query.filter_by(name=user).first()
+    if search_query:
+        ser_reqs = professional_searchbar(professional.id,search_query,search_by)
+        return render_template(
+        "professional_search.html",
+        professional=professional,
+        search_query=search_query,
+        search_by=search_by,
+        ser_reqs = ser_reqs,
+    )
     return render_template(
         "professional_search.html",
         professional=professional,
@@ -425,13 +431,18 @@ def service_request_status(user,status,request_id):
 def summary(user, id):
     if user == "customer":
         customer = Customer.query.filter_by(id=id).first()
-        return render_template("summary_all.html", customer=customer, user=user)
+        request_graph_name = service_request_graph(user=user,id=id)
+        return render_template("summary_all.html", customer=customer, user=user,request_graph_name=request_graph_name)
     elif user == "professional":
         professional = Professional.query.get_or_404(id)
-        return render_template("summary_all.html", professional=professional, user=user)
+        request_graph = service_request_graph(user=user,id=id)
+        rating_name =prof_rating_graph(professional)
+        return render_template("summary_all.html", professional=professional, user=user,request_graph=request_graph,rating_graph = rating_name)
     else:
-
-        return render_template("summary_all.html", user=user)
+        request_graph = service_request_graph(user=user,id=id)
+        user_graph = users_graph()
+        rating_graph = rating_graph_admin()
+        return render_template("summary_all.html", user=user,request_graph =request_graph,user_graph=user_graph,rating_graph=rating_graph)
 
 @app.route('/customer_dashboard/edit_request/<user_id>/<request_id>', methods=['GET', 'POST'])
 def update_request(user_id,request_id):

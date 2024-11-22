@@ -1,5 +1,10 @@
 from .modals import db, Admin, Professional, Customer, Service, ServiceRequest, Review
 from werkzeug.utils import secure_filename
+from datetime import datetime
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('agg')
+import os
 
 
 # search service by name
@@ -309,3 +314,157 @@ def reject_new_request(request):
     if overlap_request:
         request.service_status = "rejected"
     db.session.commit()
+
+
+
+def professional_searchbar(professional_id, search_query, search_type):
+    query = db.session.query(ServiceRequest, Customer).join(Customer).filter(
+        ServiceRequest.professional_id == professional_id  
+    )
+
+    if search_type == 'address':
+        query = query.filter(Customer.address.like(f'%{search_query}%'))
+    
+    elif search_type == 'pincode':
+        query = query.filter(Customer.pincode == search_query)
+    elif search_type == 'customer_name':
+        query = query.filter(Customer.name.like(f'%{search_query}%'))
+    results = query.all()
+
+    ser_req_list = []
+    for service_request, customer in results:
+        ser_req_list.append({
+            "service_request": service_request,
+            "customer": customer,
+        })
+    
+    return ser_req_list
+
+
+
+
+
+# matplotlib function
+def service_request_graph(id, user):
+    if user == "admin":
+        received_count = ServiceRequest.query.count()
+        accepted_count = ServiceRequest.query.filter_by(
+            service_status="accepted"
+        ).count()
+        rejected_count = ServiceRequest.query.filter_by(
+            service_status="rejected"
+        ).count()
+    elif user == "professional":
+        received_count = ServiceRequest.query.filter_by(professional_id=id).count()
+        accepted_count = ServiceRequest.query.filter_by(
+            professional_id=id, service_status="accepted"
+        ).count()
+        rejected_count = ServiceRequest.query.filter_by(
+            professional_id=id, service_status="rejected"
+        ).count()
+    elif user == "customer":
+        received_count = ServiceRequest.query.filter_by(customer_id=id).count()
+        accepted_count = ServiceRequest.query.filter_by(
+            customer_id=id, service_status="accepted"
+        ).count()
+        rejected_count = ServiceRequest.query.filter_by(
+            customer_id=id, service_status="rejected"
+        ).count()
+    else:
+        return []
+    categories = ["Received", "Accepted", "Rejected"]
+    counts = [received_count, accepted_count, rejected_count]
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(categories, counts, color=["blue", "green", "red"])
+    plt.title("Service Request Graph")
+    plt.xlabel("Status")
+    plt.ylabel("Count")
+
+    fldr = os.path.join("static", "images", user)
+    if not os.path.exists(fldr):
+        os.makedirs(fldr)
+
+    img_name = f"{id}_service_request.jpeg"
+    img_path = os.path.join(fldr, img_name)
+    plt.savefig(img_path)
+    plt.clf()
+    plt.close()
+    return img_name
+
+
+def users_graph():
+    profs = Professional.query.count()
+    custs = Customer.query.count()
+    x_axis = ["Professionals", "Customers"]
+    y_axis = [profs, custs]
+    plt.figure(figsize=(10, 6))
+    plt.bar(x_axis, y_axis, color=["blue", "green"])
+    plt.title("Users")
+    plt.xlabel("Type")
+    plt.ylabel("Count")
+    img_name = "users.png"
+    path = os.path.join("static", "images", "admin", img_name)
+    plt.savefig(path)
+    plt.clf()
+    plt.close()
+    return img_name
+
+
+def rating_for_admin():
+    ratings = db.session.query(Review.rating).all()
+    if ratings:
+        rating_list = [rating[0] for rating in ratings]
+        if not rating_list:
+            return 0
+        rating_sum = sum(rating_list)
+        rating = rating_sum / len(rating_list)
+        return rating
+    else:
+        return 0
+
+
+def prepare_pie_chart_data(average_rating):
+    if average_rating:
+        proportions = [average_rating, 5 - average_rating]
+        labels = ["Average Rating", "Remaining to 5"]
+        colors = ["gold", "lightgrey"]
+        return proportions, labels, colors
+    else:
+        return [], [], []
+
+
+def create_pie_chart(proportions, labels, colors, user, id):
+    if proportions and labels and colors:
+        plt.figure(figsize=(8, 8))
+        plt.pie(
+            proportions, labels=labels, colors=colors, autopct="%1.1f%%", startangle=140
+        )
+        plt.title("Average Rating Distribution")
+        plt.axis("equal")
+        if user == "admin":
+            img_name = 'rating_chart.png'
+            path = os.path.join("static", "images", "admin", img_name)
+        elif user == "professional":
+            img_name = f"{id}_rating_charg.jpeg"
+            path = os.path.join("static",'images' ,"professional", img_name)
+        plt.savefig(path)
+        plt.clf()
+        plt.close()
+        return img_name
+    else:
+        return []
+
+
+def rating_graph_admin():
+    avg_r = rating_for_admin()
+    proportions, label, color = prepare_pie_chart_data(avg_r)
+    name = create_pie_chart(proportions, label, color, "admin", 1)
+    return name
+
+
+def prof_rating_graph(professional):
+    avg_r = calculate_average_rating(professional)
+    proportions, label, color = prepare_pie_chart_data(avg_r)
+    name = create_pie_chart(proportions, label, color, "professional", professional.id)
+    return name

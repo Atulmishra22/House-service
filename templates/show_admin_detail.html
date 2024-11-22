@@ -120,7 +120,11 @@
                             {% if review %}
                             <tr>
                                 <th>Rating:</th>
-                                <td>{{ rating|int }}/5</td>
+                                <td>{{ review.rating|int }}/5</td>
+                            </tr>
+                            <tr>
+                                <th>Comments:</th>
+                                <td>{{ review.comment }}</td>
                             </tr>
                             {% endif %}
                                 

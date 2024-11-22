@@ -2,8 +2,11 @@
     {% extends 'customer_dashboard.html' %}
     <!-- import customer for customer name in customer dashboard -->
         {% block search_customer %}
-            <div class="container text-center lead">
+            <div class="container text-center fs-3 lead">
                 Summary
+            </div>
+            <div class="container-fluid  d-flex justify-content-center m-3">
+                <img src="{{ url_for('static', filename='images/customer/'+ request_graph_name ) }}" height="450" class="border rounded shadow ">
             </div>
         {% endblock search_customer %}   
 
@@ -11,8 +14,18 @@
 
     {% extends 'professional_dashboard.html' %}
         {% block professional %} <!-- import professional -->
-            <div class="container text-center lead">
+            <div class="container text-center fs-3 lead">
                 Summary
+            </div>
+            <div class="container-fluid m-3">
+                <div class="row mb-3">
+                    <div class="col-6 d-flex justify-content-around">
+                        <img src="{{ url_for('static', filename='images/professional/'+ request_graph ) }}" height="450" class="border rounded shadow ">
+                    </div>
+                    <div class="col-6 d-flex justify-content-around">
+                        <img src="{{ url_for('static', filename='images/professional/'+ rating_graph ) }}" height="450" class="border rounded shadow ">
+                    </div>                    
+                </div>
             </div>
         {% endblock professional %}
 
@@ -20,10 +33,22 @@
 
     {% extends 'admin_dashboard.html' %}
         {% block admin_content %}
-            <div class="container text-center lead">
+            <div class="container text-center fs-3 lead">
                 Summary
             </div>
-            
+            <div class="container m-3">
+                <div class="row mb-3">
+                    <div class="col-6 d-flex justify-content-start">
+                        <img src="{{ url_for('static', filename='images/admin/'+ request_graph ) }}" height="450" class="border rounded shadow ">
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <img src="{{ url_for('static', filename='images/admin/'+ rating_graph ) }}" height="450" class="border rounded shadow ">
+                    </div>                    
+                </div>
+                <div class="row-6  d-flex justify-content-center">
+                    <img src="{{ url_for('static', filename='images/admin/'+ user_graph ) }}" height="450" class="border rounded shadow ">
+                </div>
+            </div>
         {% endblock admin_content %}
 
 {% endif %}

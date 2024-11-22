@@ -8,6 +8,11 @@
     </div>
     <div class="row m-2">
         <form action="{{ url_for('update_request',user_id = customer.id,request_id = ser_req.id)}}" method="post">
+            <div class="text-center">
+                <p class="h4 text-primary text-center m-2">
+                    Service Request ID: {{ ser_req.id }}
+                </p>
+            </div>
             <div class="mb-3">
                 <label for="sid" class="form-label">Service ID:</label>
                 <input   class="form-control" name="sid" id="sid" value='{{ ser_req.service_id }}' disabled> 
