@@ -133,6 +133,27 @@ class ProfessionalApi(Resource):
             return {"message": "Professional not found"}, 404
 
 
+class SearchProfessional(Resource):
+    def get(self, id):
+        prof = Professional.query.get(id)
+        if prof:
+            return {
+                "id": prof.id,
+                "name": prof.name,
+                "email": prof.email,
+                "pwd": prof.password,
+                "service": prof.service_type,
+                "address": prof.address,
+                "pincode": prof.pincode,
+                "phone": prof.phone,
+                "desc": prof.description,
+                "file_path": prof.file_path,
+                "exp": prof.experience,
+                "status": prof.status,
+            }, 200
+        return {"message": "Professional not found"}, 404
+
+
 class CustomerApi(Resource):
     def get(self):
         customers = Customer.query.all()
@@ -201,4 +222,5 @@ class CustomerApi(Resource):
 
 api.add_resource(AdminApi, "/api/admins", "/api/admins/<int:id>")
 api.add_resource(ProfessionalApi, "/api/professionals", "/api/professionals/<int:id>")
+api.add_resource(SearchProfessional, "/api/search_professional/<int:id>")
 api.add_resource(CustomerApi, "/api/customer", "/api/customer/<int:id>")
