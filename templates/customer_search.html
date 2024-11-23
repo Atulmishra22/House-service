@@ -82,7 +82,7 @@
                             </tr>
                             <tr>
                                 <th>Rating:</th>
-                                <td>{{ prof.average_rating }}</td>
+                                <td>{{ prof.average_rating | round(1) }}</td>
                             </tr>
                             <tr>
                                 <td><a href="{{ url_for('book_service', user = customer.name,service_id=prof.service.id,professional_id=prof.professional.id,customer_id=customer.id) }}" class="btn btn-warning">Book</a></th>

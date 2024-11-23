@@ -42,7 +42,7 @@
                                     {% if review %}
                                     <tr>
                                         <th>Rating:</th>
-                                        <td>{{ review.rating }}</td>
+                                        <td>{{ review.rating| round(1) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Comment:</th>
@@ -107,7 +107,7 @@
                                     {% if review %}
                                     <tr>
                                         <th>Rating:</th>
-                                        <td>{{ review.rating }}</td>
+                                        <td>{{ review.rating|round(1) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Comment:</th>
