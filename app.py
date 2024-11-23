@@ -1,6 +1,6 @@
 from flask import Flask
 from backened.modals import db
-
+from backened.api import *
 
 app = None
 def setup():
@@ -10,7 +10,7 @@ def setup():
     
     app.app_context().push()
     db.init_app(app)
-    
+    api.init_app(app)
     app.debug = True
 
 setup()
