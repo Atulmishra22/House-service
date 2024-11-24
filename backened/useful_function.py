@@ -215,11 +215,11 @@ def status_changer_user(user, status, id):
         if status != "Delete":
             prof.status = status
             if status == "Blocked":
-                ser_req = ServiceRequest.query.filter_by(professional_id=id).all()
+                ser_req = ServiceRequest.query.filter_by(professional_id=id,service_status = 'accepted').all()
                 for ser in ser_req:
                     ser.service_status = "rejected"
         else:
-            db.session.delete(cust)
+            db.session.delete(prof)
         db.session.commit()
 
 
@@ -354,6 +354,9 @@ def service_request_graph(id, user):
         rejected_count = ServiceRequest.query.filter_by(
             service_status="rejected"
         ).count()
+        Completed_count = ServiceRequest.query.filter_by(
+            service_status="closed"
+        ).count()
     elif user == "professional":
         received_count = ServiceRequest.query.filter_by(professional_id=id).count()
         accepted_count = ServiceRequest.query.filter_by(
@@ -361,6 +364,9 @@ def service_request_graph(id, user):
         ).count()
         rejected_count = ServiceRequest.query.filter_by(
             professional_id=id, service_status="rejected"
+        ).count()
+        Completed_count = ServiceRequest.query.filter_by(
+            professional_id=id, service_status="closed"
         ).count()
     elif user == "customer":
         received_count = ServiceRequest.query.filter_by(customer_id=id).count()
@@ -370,13 +376,16 @@ def service_request_graph(id, user):
         rejected_count = ServiceRequest.query.filter_by(
             customer_id=id, service_status="rejected"
         ).count()
+        Completed_count = ServiceRequest.query.filter_by(
+            customer_id=id, service_status="closed"
+        ).count()
     else:
         return []
-    categories = ["All Request", "Accepted", "Rejected"]
-    counts = [received_count, accepted_count, rejected_count]
+    categories = ["All Request", "Accepted","Completed" ,"Rejected"]
+    counts = [received_count, accepted_count, Completed_count ,rejected_count]
 
     plt.figure(figsize=(10, 6))
-    plt.bar(categories, counts, color=["blue", "green", "red"])
+    plt.bar(categories, counts, color=["blue", "green","orange" ,"red"])
     plt.title("Service Request Graph")
     plt.xlabel("Status")
     plt.ylabel("Count")
