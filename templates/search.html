@@ -114,10 +114,11 @@
                 <h2 class="accordion-header">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#service-request-collapse" aria-expanded="true" aria-controls="service-request-collapse">
                     <div class="container row">
-                      <h4 class="col">ID</h4>
-                      <h4 class="col">Professional</h4>
-                      <h4 class="col">Request Date</h4>
-                      <h4 class="col">Status(R/A/C)</h4>
+                      <h4 class="col-1">ID</h4>
+                      <h4 class="col-3 text-center">Professional</h4>
+                      <h4 class="col-3 text-center">Customer</h4>
+                      <h4 class="col-3 text-center">Request Date</h4>
+                      <h4 class="col-2 text-center">Status(R/A/C)</h4>
                     </div>
                   </button>
                 </h2>
@@ -131,17 +132,20 @@
                       {% else %}
                           {% for ser_req in service_requests %}
                               <div class="conatiner row border border-primary p-1 lead rounded mb-1">
-                                  <div class="col">
+                                  <div class="col-1">
                                       <a href="{{ url_for('show_detail_admin',item = 'service_request',id = ser_req.id) }}" class=" fw-bold btn btn-outline-info">{{ ser_req.id }}</a>
                                   </div>
-                                  <div class="col">
-                                      <p >{{ ser_req.professional_id }}</p>
+                                  <div class="col-3 text-center">
+                                      <p >{{ ser_req.professional.name }}</p>
                                   </div>
-                                  <div class="col">
+                                  <div class="col-3 text-center">
+                                    <p >{{ ser_req.customer.name }}</p>
+                                </div>
+                                  <div class="col-3 text-center">
                                       <p >{{ ser_req.date_of_request }}</p>
                                   </div>
-                                  <div class="col">
-                                      <p >{{ ser_req.service_status }}</p>
+                                  <div class="col-2 text-center text-primary fw-bold">
+                                      <p >{{ ser_req.service_status|title }}</p>
                                       
                                   </div>
                               </div>

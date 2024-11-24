@@ -97,8 +97,8 @@ def search_customer_contact(contact):
 
 # search service_request by service name
 def search_sr_servicename(name):
-    service_id = Service.query.filter(Service.name.ilike(f"%{name}%")).first()
-    service_requests = ServiceRequest.query.filter_by(service_id=service_id).all()
+    service = Service.query.filter(Service.name.ilike(f"%{name}%")).first()
+    service_requests = ServiceRequest.query.filter_by(service_id=service.id).all()
     return service_requests
 
 
@@ -372,7 +372,7 @@ def service_request_graph(id, user):
         ).count()
     else:
         return []
-    categories = ["Received", "Accepted", "Rejected"]
+    categories = ["All Request", "Accepted", "Rejected"]
     counts = [received_count, accepted_count, rejected_count]
 
     plt.figure(figsize=(10, 6))

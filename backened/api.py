@@ -133,7 +133,7 @@ class ProfessionalApi(Resource):
             return {"message": "Professional not found"}, 404
 
 
-class SearchProfessional(Resource):
+class SearchProfessionalApi(Resource):
     def get(self, id):
         prof = Professional.query.get(id)
         if prof:
@@ -222,5 +222,5 @@ class CustomerApi(Resource):
 
 api.add_resource(AdminApi, "/api/admins", "/api/admins/<int:id>")
 api.add_resource(ProfessionalApi, "/api/professionals", "/api/professionals/<int:id>")
-api.add_resource(SearchProfessional, "/api/search_professional/<int:id>")
+api.add_resource(SearchProfessionalApi, "/api/search_professional/<int:id>")
 api.add_resource(CustomerApi, "/api/customer", "/api/customer/<int:id>")
