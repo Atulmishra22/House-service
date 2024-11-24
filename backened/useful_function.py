@@ -431,7 +431,12 @@ def prepare_pie_chart_data(average_rating):
         colors = ["gold", "lightgrey"]
         return proportions, labels, colors
     else:
-        return [], [], []
+        # zero case handle
+        proportions = [1]  # Full circle representing zero rating
+        labels = ["No Ratings"]
+        colors = ["lightgrey"]
+        return proportions, labels, colors
+
 
 
 def create_pie_chart(proportions, labels, colors, user, id):
@@ -453,7 +458,7 @@ def create_pie_chart(proportions, labels, colors, user, id):
         plt.close()
         return img_name
     else:
-        return []
+        return ''
 
 
 def rating_graph_admin():

@@ -39,10 +39,12 @@
             </div>   
     </div>    
 </nav>
-{% if professional.status != 'Approved' %}
+{% if professional.status == 'Blocked' or professional.status == 'Rejected' %}
 
     <div class="container text-center h3 lead m-4">You have been Blocked or Rejected by Admin</div>
-
+{% elif professional.status == 'pending' %}
+    <div class="container text-center h3 lead m-4">You are under verification</div>
+  
 {% else %}
 
 {% block professional %}

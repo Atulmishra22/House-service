@@ -287,6 +287,9 @@ def del_mod_service(task, id):
     if task == "delete":
         ser = Service.query.filter_by(id=id).first()
         db.session.delete(ser)
+        profs = search_professional_service_type(ser.name)
+        for prof in profs:
+            db.session.delete(prof)
         db.session.commit()
         return redirect(url_for("adminDashboard"))
     else:
